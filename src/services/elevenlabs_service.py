@@ -3,11 +3,33 @@ from io import BytesIO
 
 
 class ElevenLabsService:
+    """
+    Service to interact with the Eleven Labs API for text-to-speech conversion.
+    """
+
     def __init__(self, api_key):
+        """
+        Initialize the service with the API key.
+
+        Args:
+            api_key (str): Eleven Labs API key.
+        """
         self.client = ElevenLabs(api_key=api_key)
 
     def text_to_speech(self, voice_id, text, stability=0.75, similarity_boost=0.85):
+        """
+        Convert text to speech using the specified voice and settings.
 
+        Args:
+            voice_id (str): ID of the voice to use.
+            text (str): The text to convert.
+            stability (float): Stability of the generated voice.
+            similarity_boost (float): How much the voice matches the provided style.
+
+        Returns:
+            bytes: The raw audio data in MP3 format.
+        """
+        # Get the raw response from Eleven Labs as a stream of bytes
         response = self.client.text_to_speech.convert(
             voice_id=voice_id,
             output_format="mp3_44100_128",
