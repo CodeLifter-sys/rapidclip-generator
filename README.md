@@ -11,20 +11,44 @@
 - **Automatic Content Creation**: Generate personalized scripts based on the provided topic.
 - **Audio Narration**: Transform the script into high-quality narration.
 - **Audio Reprocessing**: Reprocess audio files that exceed a specified duration to ensure compatibility with platform constraints.
-- **Subtitle Generation**: Generate subtitles with improved alignment and segmentation:
-  - Tokenizes the transcript text while preserving punctuation.
-  - Aligns words with their respective timestamps and punctuation.
-  - Creates readable, synchronized subtitles with character and word limits per line.
-- **Multi-Language Support**: Enable content creation, narration, and subtitles in multiple languages.
 
 ---
 
 ## **Planned Features**
 
+- **Multi-Language Support**: Enable content creation, narration, and subtitles in multiple languages.
 - **Background Music Integration**: Select local soundtracks to enrich the video.
 - **Relevant Images**: Automatically generate images to illustrate the content.
 - **Visual Effects and Transitions**: Apply zoom, animations, and smooth cuts.
 - **Complete Rendering**: Create the final video ready for publication.
+
+---
+
+## **How to Use**
+
+Before running RapidClip, make sure to configure the required environment variables. Use the `.env.example` file as a template and create a `.env` file with the following variables:
+
+```plaintext
+OPENAI_API_KEY=your-openai-api-key
+ELEVENLABS_API_KEY=your-elevenlabs-api-key
+```
+
+After configuring the environment variables, you can run RapidClip using the following command:
+
+```bash
+python src/main.py --theme "Curiosities of History (a single curiosity)" --language "pt-BR" --voice_id "CstacWqMhJQlnfLPxRG4" --max_duration 60
+```
+
+### Parameters:
+- `--theme`: The theme of the script to be created.
+- `--language`: The language for the script and narration.
+- `--voice_id`: The ID of the voice to be used for narration (compatible with ElevenLabs).
+- `--max_duration`: The maximum allowed duration for the audio (in seconds).
+
+### Output:
+The generated files will be saved in the `output/` folder, including:
+- An audio file (`.mp3`) containing the narration.
+- A subtitle file (`.srt`) synchronized with the audio.
 
 ---
 
@@ -48,7 +72,7 @@
 
 For a Portuguese version of this README, see [README.pt-br.md](README.pt-br.md).
 
-We welcome contributions! If you'd like to collaborate on the project, follow these steps:
+If you'd like to collaborate on the project, follow these steps:
 
 1. Fork the repository.
 2. Create a branch for your feature or bug fix:
