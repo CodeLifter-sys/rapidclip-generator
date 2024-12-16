@@ -16,6 +16,7 @@
 - **Visual Effects and Transitions**: Apply zoom, animations, and smooth cuts.
 - **Synchronized Subtitles**: Automatically generate subtitles aligned with the audio.
 - **Complete Rendering**: Create the final video ready for publication.
+- **Audio Reprocessing**: Reprocess audio files that exceed a specified duration to ensure compatibility with platform constraints.
 
 ---
 
@@ -31,6 +32,7 @@
 2. Implement visual effects and transitions between images.
 3. Ensure precise synchronization of audio, images, and subtitles.
 4. Optimize final rendering to ensure compatibility with short video platforms.
+5. Expand support for audio processing, including reprocessing long audio files and handling user-defined duration limits.
 
 ---
 

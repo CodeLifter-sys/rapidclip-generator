@@ -14,6 +14,7 @@
 - **Efeitos Visuais e Transições**: Aplicar zoom, animações e cortes suaves.
 - **Legendas Sincronizadas**: Gerar automaticamente legendas alinhadas com o áudio.
 - **Renderização Completa**: Criar o vídeo final pronto para publicação.
+- **Reprocessamento de Áudio**: Reprocessar áudios que excedam uma duração especificada para garantir compatibilidade com as restrições da plataforma.
 
 ---
 
@@ -29,6 +30,7 @@
 2. Implementar efeitos visuais e transições entre imagens.
 3. Garantir a sincronização precisa entre áudio, imagens e legendas.
 4. Otimizar a renderização final para garantir compatibilidade com plataformas de vídeos curtos.
+5. Expandir o suporte ao processamento de áudio, incluindo reprocessamento de arquivos longos e gerenciamento de limites definidos pelo usuário.
 
 ---
 
