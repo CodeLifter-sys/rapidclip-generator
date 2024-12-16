@@ -11,12 +11,16 @@
 - **Automatic Content Creation**: Generate personalized scripts based on the provided topic.
 - **Audio Narration**: Transform the script into high-quality narration.
 - **Audio Reprocessing**: Reprocess audio files that exceed a specified duration to ensure compatibility with platform constraints.
+- **Subtitle Generation**: Generate subtitles with improved alignment and segmentation:
+  - Tokenizes the transcript text while preserving punctuation.
+  - Aligns words with their respective timestamps and punctuation.
+  - Creates readable, synchronized subtitles with character and word limits per line.
+- **Multi-Language Support**: Enable content creation, narration, and subtitles in multiple languages.
 
 ---
 
 ## **Planned Features**
 
-- **Multi-Language Support**: Enable content creation, narration, and subtitles in multiple languages.
 - **Background Music Integration**: Select local soundtracks to enrich the video.
 - **Relevant Images**: Automatically generate images to illustrate the content.
 - **Visual Effects and Transitions**: Apply zoom, animations, and smooth cuts.
@@ -49,6 +53,12 @@ python src/main.py --theme "Curiosities of History (a single curiosity)" --langu
 The generated files will be saved in the `output/` folder, including:
 - An audio file (`.mp3`) containing the narration.
 - A subtitle file (`.srt`) synchronized with the audio.
+
+#### Subtitle Approach:
+The subtitle generation process ensures improved alignment and readability:
+- **Tokenization with Punctuation**: The complete transcript text is tokenized into words and punctuation, preserving the original order.
+- **Word-Punctuation Alignment**: Each word is aligned with its corresponding token, ensuring punctuation is correctly placed.
+- **Cue Segmentation**: Subtitles are divided into smaller segments (cues) based on word and character limits per line, maintaining synchronization with audio timestamps.
 
 ---
 
