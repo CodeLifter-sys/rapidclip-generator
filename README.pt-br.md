@@ -7,7 +7,7 @@
 ## **Funcionalidades Implementadas**
 
 - **Criação Automática de Conteúdo**: Gerar roteiros personalizados com base no tema fornecido.
-- **Narração de Áudio**: Transformar o roteiro em narração de alta qualidade.
+- **Narração de Áudio**: Transformar o roteiro em narração de alta qualidade, agora com suporte tanto ao ElevenLabs quanto ao OpenAI TTS.
 - **Reprocessamento de Áudio**: Reprocessar áudios que excedam uma duração especificada para garantir compatibilidade com as restrições da plataforma.
 - **Geração de Legendas**: Gerar legendas com alinhamento e segmentação aprimorados:
   - Tokeniza o texto transcrito, preservando a pontuação.
@@ -35,16 +35,36 @@ OPENAI_API_KEY=your-openai-api-key
 ELEVENLABS_API_KEY=your-elevenlabs-api-key
 ```
 
-Após configurar as variáveis, você pode executar o RapidClip usando o seguinte comando:
+Após configurar as variáveis, você pode executar o RapidClip usando um dos comandos a seguir.
+
+### Exemplo com ElevenLabs TTS
 
 ```bash
-python src/main.py --theme "Curiosidades da História (uma única curiosidade)" --language "pt-BR" --voice_id "CstacWqMhJQlnfLPxRG4" --max_duration 60
+python src/main.py --theme "Curiosidades da História (uma única curiosidade)" \
+  --language "pt-BR" \
+  --voice_id "CstacWqMhJQlnfLPxRG4" \
+  --max_duration 60 \
+  --tts_service elevenlabs
+```
+
+### Exemplo com OpenAI TTS
+
+```bash
+python src/main.py --theme "Curiosidades da Tecnologia (uma única curiosidade)" \
+  --language "pt-BR" \
+  --max_duration 60 \
+  --tts_service openai \
+  --openai_tts_model "tts-1-hd" \
+  --openai_tts_voice "alloy"
 ```
 
 ### Parâmetros:
 - `--theme`: O tema do roteiro a ser criado.
 - `--language`: O idioma para o roteiro e narração.
-- `--voice_id`: O ID da voz a ser usada para a narração (compatível com ElevenLabs).
+- `--tts_service`: O serviço de TTS a ser usado (`elevenlabs` ou `openai`). O padrão é `elevenlabs`.
+- `--voice_id`: O ID da voz a ser usada para a narração (obrigatório para ElevenLabs).
+- `--openai_tts_model`: O modelo de TTS da OpenAI a ser usado (padrão: `tts-1-hd`).
+- `--openai_tts_voice`: A voz da OpenAI a ser usada (padrão: `alloy`).
 - `--max_duration`: A duração máxima permitida para o áudio (em segundos).
 
 ### Saída:
