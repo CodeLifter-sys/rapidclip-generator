@@ -9,6 +9,7 @@ from utils.file_handler import save_audio, save_subtitles
 from utils.logger import setup_logger
 from utils.audio_processing import reprocess_audio
 from utils.subtitle_handler import align_words_with_punctuation, format_srt_from_aligned_words
+from services.openai_tts_service import OpenAITTSService
 
 
 def main():
@@ -39,29 +40,43 @@ def main():
         logger.error(f"Error generating script: {e}")
         sys.exit(1)
 
+    # Choose TTS service
+    if args.tts_service == "elevenlabs":
+        logger.info("Converting text to speech with Eleven Labs...")
+    else:
+        logger.info("Converting text to speech with OpenAI TTS...")
+
     # Convert script to audio
-    logger.info("Converting text to speech with Eleven Labs...")
     try:
-        response = elevenlabs_service.text_to_speech(
-            voice_id=args.voice_id,
-            text=script_text,
-            stability=args.stability,
-            similarity_boost=args.similarity_boost
-        )
+        if args.tts_service == "elevenlabs":
+            response = elevenlabs_service.text_to_speech(
+                voice_id=args.voice_id,
+                text=script_text,
+                stability=args.stability,
+                similarity_boost=args.similarity_boost
+            )
+        else:
+            # Use OpenAI TTS service
+            tts_service = OpenAITTSService(api_key=OPENAI_API_KEY)
+            response = tts_service.text_to_speech(
+                text=script_text,
+                model=args.openai_tts_model,
+                voice=args.openai_tts_voice
+            )
 
         # Generate a single file_id for both audio and subtitles
         file_id = str(uuid.uuid4())
         output_file = save_audio(response, file_id=file_id)
-        logger.info(f"Audio successfully generated and saved as {
-                    output_file}.")
+        logger.info(
+            f"Audio successfully generated and saved as {output_file}.")
     except Exception as e:
         logger.error(f"Error generating audio: {e}")
         sys.exit(1)
 
     # Process audio if max_duration is provided
     if args.max_duration:
-        logger.info(f"Processing audio to ensure it does not exceed {
-                    args.max_duration} seconds...")
+        logger.info(
+            f"Processing audio to ensure it does not exceed {args.max_duration} seconds...")
         try:
             # Read the original audio file as bytes
             with open(output_file, 'rb') as f:
@@ -78,10 +93,10 @@ def main():
                 # Overwrite the original file with processed audio
                 with open(output_file, 'wb') as f:
                     f.write(processed_bytes)
-                logger.info(f"Audio processed successfully and saved as {
-                            output_file}.")
-                logger.debug(f"Original audio file {
-                             output_file} overwritten after processing.")
+                logger.info(
+                    f"Audio processed successfully and saved as {output_file}.")
+                logger.debug(
+                    f"Original audio file {output_file} overwritten after processing.")
             else:
                 # If no processing was needed, keep the original file
                 logger.info(
