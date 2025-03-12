@@ -1,6 +1,7 @@
 import sys
 import os
 import uuid
+import logging
 from config import settings
 from parsers.arguments import parse_args
 from services.openai_service import OpenAIService
@@ -22,7 +23,7 @@ def main():
     - Processes the audio if max_duration is specified.
     - Generates subtitles from the audio using OpenAI's Whisper API.
     - Generates images based on subtitle intervals using the Replicate API.
-    All outputs (audio, subtitles, images) are saved in a dedicated folder for each video.
+    All outputs (audio, subtitles, images, and log file) are saved in a dedicated folder for each video.
     """
     logger = setup_logger()
     args = parse_args()
@@ -72,6 +73,13 @@ def main():
         video_folder = f"output/{file_id}"
         if not os.path.exists(video_folder):
             os.makedirs(video_folder)
+
+        # Add a file handler to the logger to save logs in the video folder
+        file_handler = logging.FileHandler(
+            f"{video_folder}/process.log", mode='w', encoding='utf-8')
+        file_handler.setFormatter(logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        logger.addHandler(file_handler)
 
         output_file = save_audio(
             response, directory=video_folder, file_id=file_id)
@@ -143,6 +151,8 @@ def main():
                 previous_prompts=previous_image_prompts,
                 group_text=group_text
             )
+            # Log the generated image prompt
+            logger.info(f"Image prompt for cue {(i // 2) + 1}: {image_prompt}")
             previous_image_prompts.append(image_prompt)
             image_data = replicate_service.generate_image(
                 image_prompt, width=1080, height=1920)
