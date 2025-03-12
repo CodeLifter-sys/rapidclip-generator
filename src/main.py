@@ -23,6 +23,7 @@ def main():
     - Processes the audio if max_duration is specified.
     - Generates subtitles from the audio using OpenAI's Whisper API.
     - Generates images based on subtitle intervals using the Replicate API.
+    - Assembles the final video using the generated audio, images, subtitles, and animated transitions.
     All outputs (audio, subtitles, images, and log file) are saved in a dedicated folder for each video.
     """
     logger = setup_logger()
@@ -161,6 +162,17 @@ def main():
             logger.info(f"Image generated and saved as {image_file}.")
     except Exception as e:
         logger.error(f"Error generating images: {e}")
+        sys.exit(1)
+
+    # Assemble the final video using audio, images, subtitles, and transitions
+    logger.info(
+        "Assembling final video with audio, images, subtitles, and transitions...")
+    try:
+        from services.video_editor import assemble_video
+        final_video_path = assemble_video(video_folder, file_id, cues)
+        logger.info(f"Final video assembled and saved as {final_video_path}.")
+    except Exception as e:
+        logger.error(f"Error assembling final video: {e}")
         sys.exit(1)
 
 
