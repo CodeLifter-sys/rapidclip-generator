@@ -1,6 +1,6 @@
 # **RapidClip**
 
-**RapidClip** é um projeto em andamento que busca automatizar a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. O objetivo é permitir que o sistema gere vídeos completos a partir de um tema fornecido, combinando narração, música de fundo, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo e montagem final do vídeo com transições animadas.
+**RapidClip** é um projeto que automatiza a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. A versão atual permite gerar vídeos completos a partir de um tema fornecido, combinando narração, música de fundo, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo e montagem final do vídeo com transições animadas.
 
 🇺🇸 Para a versão em inglês deste README, veja [README.md](README.md).
 
@@ -10,7 +10,7 @@
 
 - **Criação Automática de Conteúdo**: Geração de roteiros personalizados com base no tema fornecido.
 - **Narração de Áudio**: Transformação do roteiro em narração de alta qualidade, com suporte tanto ao ElevenLabs quanto ao OpenAI TTS.
-- **Reprocessamento de Áudio**: Reprocessamento de áudios que excedam uma duração especificada, garantindo compatibilidade com as restrições das plataformas.
+- **Reprocessamento de Áudio**: Reprocessamento de áudios que excedem uma duração especificada, garantindo compatibilidade com as restrições das plataformas.
 - **Geração de Legendas**: Criação de legendas com melhor alinhamento e segmentação:
   - Tokenização do texto transcrito, preservando a pontuação.
   - Alinhamento das palavras com seus respectivos timestamps e pontuações.
@@ -18,7 +18,7 @@
 - **Geração de Imagens Aprimorada**:
   - Geração de prompts diversificados para criação de imagens, utilizando o contexto completo das legendas e os prompts gerados anteriormente (quando disponíveis), assegurando variação e criatividade.
   - Suporte à configuração da versão do modelo SANA via variável de ambiente.
-- **Montagem Final do Vídeo**: Composição do vídeo final utilizando o áudio, as imagens geradas e as legendas, aplicando transições animadas e mantendo a resolução de 1080x1920.
+- **Montagem Final do Vídeo**: Composição do vídeo final utilizando o áudio, as imagens geradas e as legendas, com transições animadas (incluindo um efeito de zoom in lento nas imagens) e mantendo a resolução de 1080x1920. O primeiro frame do vídeo é a primeira imagem gerada.
 - **Suporte a Múltiplos Idiomas**: Possibilidade de criação de conteúdo, narração e legendas em diversos idiomas.
 - **Registro de Processo**: Armazenamento de logs detalhados do andamento do processo – incluindo os prompts gerados para cada intervalo de imagem – na pasta de saída de cada vídeo.
 
@@ -28,7 +28,7 @@
 
 - **Integração de Música de Fundo**: Seleção de trilhas sonoras locais para enriquecer o vídeo.
 - **Imagens Relevantes**: Aperfeiçoamento na seleção de imagens para ilustrar melhor o conteúdo.
-- **Efeitos Visuais e Transições**: Aplicação de zoom, animações e cortes suaves.
+- **Efeitos Visuais e Transições**: Aplicação de zoom, animações e cortes suaves adicionais.
 - **Renderização Completa**: Criação do vídeo final pronto para publicação.
 - **Recursos Avançados de Edição de Vídeo**: Expansão das capacidades de montagem e edição para funcionalidades mais avançadas.
 
@@ -36,7 +36,7 @@
 
 ## **Como Usar**
 
-Antes de executar o RapidClip, certifique-se de configurar as variáveis de ambiente necessárias. Utilize o arquivo `.env.example` como modelo e crie um arquivo `.env` com as seguintes variáveis:
+Antes de executar o RapidClip, configure as variáveis de ambiente necessárias. Utilize o arquivo `.env.example` como modelo e crie um arquivo `.env` com as seguintes variáveis:
 
 ```plaintext
 OPENAI_API_KEY=your-openai-api-key
@@ -45,12 +45,12 @@ REPLICATE_API_TOKEN=your-replicate-api-token
 SANA_MODEL_VERSION=your-sana-model-version
 ```
 
-Após configurar as variáveis, você pode executar o RapidClip utilizando um dos comandos abaixo.
+Após configurar as variáveis, execute o RapidClip utilizando um dos comandos abaixo.
 
 ### Exemplo com ElevenLabs TTS
 
 ```bash
-python src/main.py --theme "Curiosidades da História (uma única curiosidade)" \
+python src/main.py --theme "Curiosidades do Espaço (uma única curiosidade)" \
   --language "pt-BR" \
   --voice_id "CstacWqMhJQlnfLPxRG4" \
   --max_duration 60 \
@@ -94,22 +94,20 @@ O processo de geração de legendas garante melhor alinhamento e legibilidade:
 
 ## **Status do Projeto**
 
-**RapidClip** está em sua fase inicial de desenvolvimento. As funcionalidades principais estão implementadas e testadas. Atualizações recentes incluem:
-- Melhoria na geração de prompts para imagens, com diversificação e inclusão condicional dos prompts anteriores.
+**RapidClip** está consolidado em sua versão atual. As funcionalidades principais foram implementadas e testadas, incluindo:
+- Geração de roteiros, narração, legendas, e imagens com prompts diversificados.
+- Montagem final do vídeo com transições animadas e efeito de zoom in nas imagens.
+- Registro detalhado do processo com logs salvos na pasta de saída de cada vídeo.
 - Suporte à configuração da versão do modelo SANA via variável de ambiente.
-- Inclusão de registro detalhado do processo, com logs salvos em cada pasta de saída de vídeo.
-- Implementação de um módulo de montagem final que integra áudio, imagens e legendas com transições animadas para compor o vídeo final na resolução de 1080x1920.
 
----
+Apesar da versão atual estar consolidada, os seguintes planos futuros permanecem:
 
-## **Próximos Passos**
-
-1. Estruturar o pipeline para criação de roteiros, narração e geração de imagens.
-2. Implementar efeitos visuais e transições adicionais entre imagens.
-3. Garantir a sincronização precisa entre áudio, imagens e legendas.
-4. Otimizar a renderização final para compatibilidade com plataformas de vídeos curtos.
-5. Expandir o suporte ao processamento de áudio, incluindo reprocessamento de arquivos longos e gerenciamento de limites definidos pelo usuário.
-6. Aprimorar as funcionalidades de edição de vídeo para recursos mais avançados.
+- **Integração de Música de Fundo**: Selecionar trilhas sonoras locais para enriquecer o vídeo.
+- **Imagens Relevantes**: Aperfeiçoar a seleção de imagens para ilustrar melhor o conteúdo.
+- **Efeitos Visuais e Transições**: Aplicar zoom, animações e cortes suaves adicionais.
+- **Renderização Completa**: Otimizar o vídeo final para compatibilidade com plataformas de vídeos curtos.
+- **Recursos Avançados de Edição de Vídeo**: Expandir as capacidades de montagem e edição para funcionalidades mais avançadas.
+- **Suporte Avançado ao Processamento de Áudio**: Incluir reprocessamento de arquivos longos e gerenciamento de limites definidos pelo usuário.
 
 ---
 

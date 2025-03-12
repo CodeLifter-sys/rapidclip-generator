@@ -1,42 +1,42 @@
 # **RapidClip**
 
-**RapidClip** is an ongoing project aimed at automating the creation of short videos, ideal for platforms like YouTube Shorts, Instagram Reels, TikTok, and Kwai. The goal is to enable the system to generate complete videos from a provided topic, combining narration, background music, dynamic images, visual effects, synchronized subtitles, detailed process logging, and final video assembly with animated transitions.
+**RapidClip** is a project that automates the creation of short videos, ideal for platforms such as YouTube Shorts, Instagram Reels, TikTok, and Kwai. The current version allows you to generate complete videos from a given topic by combining narration, dynamic images, visual effects, synchronized subtitles, detailed process logging, and final video assembly with animated transitions.
 
-🇧🇷 For a Portuguese version of this README, see [README.pt-br.md](README.pt-br.md).
+🇧🇷 For the Portuguese version of this README, see [README.pt-br.md](README.pt-br.md).
 
 ---
 
 ## **Implemented Features**
 
-- **Automatic Content Creation**: Generate personalized scripts based on the provided topic.
-- **Audio Narration**: Transform the script into high-quality narration, with support for both ElevenLabs and OpenAI TTS.
-- **Audio Reprocessing**: Reprocess audio files that exceed a specified duration to ensure compatibility with platform constraints.
-- **Subtitle Generation**: Generate subtitles with improved alignment and segmentation:
-  - Tokenizes the transcript text while preserving punctuation.
-  - Aligns words with their respective timestamps and punctuation.
-  - Creates readable, synchronized subtitles with character and word limits per line.
+- **Automatic Content Creation**: Personalized script generation based on the provided theme.
+- **Audio Narration**: Transformation of the script into high-quality narration, with support for both ElevenLabs and OpenAI TTS.
+- **Audio Reprocessing**: Processing of audio files that exceed a specified duration to ensure compatibility with platform restrictions.
+- **Subtitle Generation**: Creation of subtitles with improved alignment and segmentation:
+  - Tokenization of the full transcribed text while preserving punctuation.
+  - Alignment of words with their respective timestamps and punctuation.
+  - Generation of legible and synchronized subtitles with character and word limits per line.
 - **Enhanced Image Generation**:
-  - Generate diverse image prompts using an OpenAI-based prompt generator that leverages the full subtitle context and previously generated prompts (included only when available), ensuring varied and creative visual outputs.
-  - Supports a configurable SANA model version for image generation via Replicate.
-- **Video Assembly**: Assemble a final video using the generated audio, images, and subtitles with animated transitions. A dedicated module composes these elements into a final video file with a resolution of 1080x1920.
-- **Multi-Language Support**: Enable content creation, narration, and subtitles in multiple languages.
-- **Process Logging**: Detailed logs of the overall video generation process, including the generated image prompts, are saved in each video's output folder.
+  - Generation of diversified prompts for image creation, using the complete subtitle context and previously generated prompts (when available) to ensure varied and creative visual outputs.
+  - Support for configuring the SANA model version via an environment variable.
+- **Final Video Assembly**: Composition of the final video using the generated audio, images, and subtitles, with animated transitions (including a slow zoom-in effect on images) and a resolution of 1080x1920.
+- **Relevant Images**: Improved selection of images to better illustrate the content.
+- **Visual Effects and Transitions**: Application of zoom effects, animations, and additional smooth cuts.
+- **Complete Rendering**: Creation of the final video ready for publication.
+- **Multi-Language Support**: Ability to create content, narration, and subtitles in multiple languages.
+- **Process Logging**: Detailed logging of the entire video generation process – including the prompts generated for each image interval – stored in each video's output folder.
 
 ---
 
 ## **Planned Features**
 
-- **Background Music Integration**: Select local soundtracks to enrich the video.
-- **Relevant Images**: Further refine image selection to better illustrate the content.
-- **Visual Effects and Transitions**: Apply zoom, animations, and smooth cuts.
-- **Complete Rendering**: Create the final video ready for publication.
-- **Additional Video Editing Enhancements**: Expand features for more advanced video composition and editing.
+- **Background Music Integration**: Selection of royalty-free soundtracks to enrich the video.
+- **Advanced Video Editing Features**: Expansion of editing capabilities for more sophisticated functionalities.
 
 ---
 
 ## **How to Use**
 
-Before running RapidClip, make sure to configure the required environment variables. Use the `.env.example` file as a template and create a `.env` file with the following variables:
+Before running RapidClip, ensure that the required environment variables are set. Use the `.env.example` file as a template and create a `.env` file with the following variables:
 
 ```plaintext
 OPENAI_API_KEY=your-openai-api-key
@@ -45,13 +45,13 @@ REPLICATE_API_TOKEN=your-replicate-api-token
 SANA_MODEL_VERSION=your-sana-model-version
 ```
 
-After configuring the environment variables, you can run RapidClip using one of the following commands.
+After setting up the environment variables, you can run RapidClip using one of the commands below.
 
 ### Example with ElevenLabs TTS
 
 ```bash
-python src/main.py --theme "Curiosities of History (a single curiosity)" \
-  --language "pt-BR" \
+python src/main.py --theme "Space Curiosities (a single curiosity)" \
+  --language "en" \
   --voice_id "CstacWqMhJQlnfLPxRG4" \
   --max_duration 60 \
   --tts_service elevenlabs
@@ -60,7 +60,7 @@ python src/main.py --theme "Curiosities of History (a single curiosity)" \
 ### Example with OpenAI TTS
 
 ```bash
-python src/main.py --theme "Curiosities of Technology (a single curiosity)" \
+python src/main.py --theme "Technology Curiosities (a single curiosity)" \
   --language "en" \
   --max_duration 60 \
   --tts_service openai \
@@ -72,53 +72,47 @@ python src/main.py --theme "Curiosities of Technology (a single curiosity)" \
 - `--theme`: The theme of the script to be created.
 - `--language`: The language for the script and narration.
 - `--tts_service`: The TTS service to use (`elevenlabs` or `openai`). Defaults to `elevenlabs`.
-- `--voice_id`: The ID of the voice to be used for narration (required for ElevenLabs).
-- `--openai_tts_model`: The OpenAI TTS model to use (default: `tts-1-hd`).
-- `--openai_tts_voice`: The OpenAI TTS voice to use (default: `alloy`).
+- `--voice_id`: The voice ID to be used for narration (required for ElevenLabs).
+- `--openai_tts_model`: The OpenAI TTS model to be used (default: `tts-1-hd`).
+- `--openai_tts_voice`: The OpenAI TTS voice to be used (default: `alloy`).
 - `--max_duration`: The maximum allowed duration for the audio (in seconds).
 
 ### Output:
 The generated files will be saved in the `output/` folder, including:
-- An audio file (`.mp3`) containing the narration.
+- An audio file (`.mp3`) with the narration.
 - A subtitle file (`.srt`) synchronized with the audio.
-- A `process.log` file containing detailed logs of the video generation process, including the image prompts generated for each subtitle interval.
-- A final video file (`_final.mp4`) assembled with animated transitions.
+- A `process.log` file containing detailed logs of the video generation process, including the prompts generated for each image interval.
+- A final video (`_final.mp4`) assembled with animated transitions, maintaining a resolution of 1080x1920.
 
 #### Subtitle Approach:
-The subtitle generation process ensures improved alignment and readability:
-- **Tokenization with Punctuation**: The complete transcript text is tokenized into words and punctuation, preserving the original order.
-- **Word-Punctuation Alignment**: Each word is aligned with its corresponding token, ensuring punctuation is correctly placed.
-- **Cue Segmentation**: Subtitles are divided into smaller segments (cues) based on word and character limits per line, maintaining synchronization with audio timestamps.
+The subtitle generation process ensures better alignment and readability:
+- **Punctuation Tokenization**: The full transcribed text is tokenized into words and punctuation, preserving the original order.
+- **Word-Punctuation Alignment**: Each word is aligned with its corresponding token, ensuring correct punctuation placement.
+- **Cue Segmentation**: Subtitles are divided into smaller segments (cues) based on character and word limits per line, maintaining synchronization with the audio timestamps.
 
 ---
 
 ## **Project Status**
 
-**RapidClip** is in its initial development phase. The core functionalities are in place, and recent updates include:
-- Enhanced image generation prompts with diversity and process logging.
-- Support for a configurable SANA model version.
-- Implementation of a video assembly module that combines audio, images, and subtitles with animated transitions to produce a final video at 1080x1920 resolution.
-
-Continuous improvements are being made to ensure an efficient and intuitive workflow.
+**RapidClip** is now in its first stable version. The core functionalities have been implemented and thoroughly tested, including:
+- Generation of scripts, narration, subtitles, and images with diversified prompts.
+- Final video assembly with animated transitions and a slow zoom-in effect on images, producing a final video at 1080x1920 resolution.
+- Improved image selection and visual effects.
+- Detailed process logging with logs saved in each video's output folder.
+- Support for configuring the SANA model version via an environment variable.
 
 ---
 
 ## **Next Steps**
 
-1. Structure the pipeline for creating scripts, narration, and generating images.
-2. Implement additional visual effects and transitions between images.
-3. Ensure precise synchronization of audio, images, and subtitles.
-4. Optimize final rendering to ensure compatibility with short video platforms.
-5. Expand support for audio processing, including reprocessing long audio files and handling user-defined duration limits.
-6. Enhance video editing capabilities for more advanced features.
+1. Implement royalty-free background music integration.
+2. Expand advanced video editing features for more sophisticated functionalities.
 
 ---
 
 ## **Contributions**
 
-For a Portuguese version of this README, see [README.pt-br.md](README.pt-br.md).
-
-If you'd like to collaborate on the project, follow these steps:
+We welcome contributions! If you would like to collaborate on the project, please follow these steps:
 
 1. Fork the repository.
 2. Create a branch for your feature or bug fix:
@@ -127,10 +121,10 @@ If you'd like to collaborate on the project, follow these steps:
    ```
 3. Make your changes and submit a pull request detailing your modifications.
 
-We'd love your help to make RapidClip even better!
+Your help is greatly appreciated to make RapidClip even better!
 
 ---
 
 ## **License**
 
-This project is licensed under the **MIT** license. This means you are free to use, modify, and distribute it, provided the original license is included in the code. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the **MIT** license. This means you are free to use, modify, and distribute it, provided the original license is included in the code. Please refer to the [LICENSE](LICENSE) file for more details.
