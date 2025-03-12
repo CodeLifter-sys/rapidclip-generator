@@ -1,33 +1,37 @@
 import sys
+import os
 import uuid
-from config.settings import OPENAI_API_KEY, ELEVENLABS_API_KEY
+from config import settings
 from parsers.arguments import parse_args
 from services.openai_service import OpenAIService
 from services.elevenlabs_service import ElevenLabsService
 from services.whisper_service import WhisperService
-from utils.file_handler import save_audio, save_subtitles
+from services.openai_tts_service import OpenAITTSService
+from services.replicate_service import ReplicateService
+from utils.file_handler import save_audio, save_subtitles, save_image
 from utils.logger import setup_logger
 from utils.audio_processing import reprocess_audio
 from utils.subtitle_handler import align_words_with_punctuation, format_srt_from_aligned_words
-from services.openai_tts_service import OpenAITTSService
 
 
 def main():
     """
     Main entry point for the application.
     - Generates a script using OpenAI API.
-    - Converts the script to speech using Eleven Labs API.
+    - Converts the script to speech using Eleven Labs or OpenAI TTS API.
     - Processes the audio if max_duration is specified.
     - Generates subtitles from the audio using OpenAI's Whisper API.
+    - Generates images based on subtitle intervals using the Replicate API.
+    All outputs (audio, subtitles, images) are saved in a dedicated folder for each video.
     """
     logger = setup_logger()
     args = parse_args()
 
     # Initialize services
     logger.info("Initializing services...")
-    openai_service = OpenAIService(api_key=OPENAI_API_KEY)
-    elevenlabs_service = ElevenLabsService(api_key=ELEVENLABS_API_KEY)
-    whisper_service = WhisperService(api_key=OPENAI_API_KEY)
+    openai_service = OpenAIService(api_key=settings.OPENAI_API_KEY)
+    elevenlabs_service = ElevenLabsService(api_key=settings.ELEVENLABS_API_KEY)
+    whisper_service = WhisperService(api_key=settings.OPENAI_API_KEY)
 
     # Generate the script
     logger.info("Generating script with OpenAI...")
@@ -56,17 +60,21 @@ def main():
                 similarity_boost=args.similarity_boost
             )
         else:
-            # Use OpenAI TTS service
-            tts_service = OpenAITTSService(api_key=OPENAI_API_KEY)
+            tts_service = OpenAITTSService(api_key=settings.OPENAI_API_KEY)
             response = tts_service.text_to_speech(
                 text=script_text,
                 model=args.openai_tts_model,
                 voice=args.openai_tts_voice
             )
 
-        # Generate a single file_id for both audio and subtitles
+        # Generate a unique file_id for this video and create a dedicated output folder
         file_id = str(uuid.uuid4())
-        output_file = save_audio(response, file_id=file_id)
+        video_folder = f"output/{file_id}"
+        if not os.path.exists(video_folder):
+            os.makedirs(video_folder)
+
+        output_file = save_audio(
+            response, directory=video_folder, file_id=file_id)
         logger.info(
             f"Audio successfully generated and saved as {output_file}.")
     except Exception as e:
@@ -78,11 +86,9 @@ def main():
         logger.info(
             f"Processing audio to ensure it does not exceed {args.max_duration} seconds...")
         try:
-            # Read the original audio file as bytes
             with open(output_file, 'rb') as f:
                 audio_bytes = f.read()
 
-            # Reprocess the audio (e.g., speed up) if necessary
             processed_bytes = reprocess_audio(
                 audio_data=audio_bytes,
                 max_duration=args.max_duration,
@@ -90,7 +96,6 @@ def main():
             )
 
             if processed_bytes != audio_bytes:
-                # Overwrite the original file with processed audio
                 with open(output_file, 'wb') as f:
                     f.write(processed_bytes)
                 logger.info(
@@ -98,7 +103,6 @@ def main():
                 logger.debug(
                     f"Original audio file {output_file} overwritten after processing.")
             else:
-                # If no processing was needed, keep the original file
                 logger.info(
                     "Audio duration is within the maximum duration. No processing needed.")
 
@@ -113,11 +117,40 @@ def main():
             audio_file_path=output_file)
         aligned_words = align_words_with_punctuation(
             transcript.words, transcript.text)
-        srt_content = format_srt_from_aligned_words(aligned_words)
-        subtitle_file = save_subtitles(srt_content, file_id=file_id)
+        srt_content, cues = format_srt_from_aligned_words(aligned_words)
+        subtitle_file = save_subtitles(
+            srt_content, directory=video_folder, file_id=file_id)
         logger.info(f"Subtitles generated and saved as {subtitle_file}.")
     except Exception as e:
         logger.error(f"Error generating subtitles: {e}")
+        sys.exit(1)
+
+    # Generate images based on subtitle intervals
+    logger.info(
+        "Generating images based on subtitle intervals using Replicate...")
+    try:
+        replicate_service = ReplicateService(
+            api_token=settings.REPLICATE_API_TOKEN)
+        # Initialize list to store prompts generated for images in this video
+        previous_image_prompts = []
+        # Group cues in pairs (each image will cover up to two subtitle intervals)
+        for i in range(0, len(cues), 2):
+            group = cues[i:i+2]
+            group_text = " ".join([cue[2] for cue in group])
+            # Generate the image prompt using the language model with the required context and instructions
+            image_prompt = openai_service.generate_image_prompt(
+                full_subtitles=srt_content,
+                previous_prompts=previous_image_prompts,
+                group_text=group_text
+            )
+            previous_image_prompts.append(image_prompt)
+            image_data = replicate_service.generate_image(
+                image_prompt, width=1080, height=1920)
+            image_file = save_image(
+                image_data, directory=video_folder, file_id=file_id, suffix=f"img_{(i // 2) + 1}")
+            logger.info(f"Image generated and saved as {image_file}.")
+    except Exception as e:
+        logger.error(f"Error generating images: {e}")
         sys.exit(1)
 
 

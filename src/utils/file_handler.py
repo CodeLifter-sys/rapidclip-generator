@@ -25,7 +25,7 @@ def save_audio(response, directory="output", file_id=None):
     return output_file
 
 
-def save_subtitles(srt_content: str, directory="output", file_id=None):
+def save_subtitles(srt_content, directory="output", file_id=None):
     """
     Saves subtitle data to an SRT file.
 
@@ -46,3 +46,27 @@ def save_subtitles(srt_content: str, directory="output", file_id=None):
         f.write(srt_content)
 
     return subtitle_file
+
+
+def save_image(image_data, directory="output", file_id=None, suffix="image"):
+    """
+    Saves image data to a file.
+
+    :param image_data: The image data to save (bytes).
+    :param directory: The directory where the image file will be saved.
+    :param file_id: An optional unique identifier to name the file.
+    :param suffix: Suffix to add to the file name.
+    :return: Path to the saved image file.
+    """
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    if not file_id:
+        file_id = str(uuid.uuid4())
+
+    output_file = f"{directory}/{file_id}_{suffix}.png"
+
+    with open(output_file, "wb") as f:
+        f.write(image_data)
+
+    return output_file
