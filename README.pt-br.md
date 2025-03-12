@@ -1,6 +1,6 @@
 # **RapidClip**
 
-**RapidClip** é um projeto em andamento que busca automatizar a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. O objetivo é permitir que o sistema gere vídeos completos a partir de um tema fornecido, combinando narração, música de fundo, imagens dinâmicas, efeitos visuais, legendas sincronizadas e registro detalhado do processo.
+**RapidClip** é um projeto em andamento que busca automatizar a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. O objetivo é permitir que o sistema gere vídeos completos a partir de um tema fornecido, combinando narração, música de fundo, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo e montagem final do vídeo com transições animadas.
 
 🇺🇸 Para a versão em inglês deste README, veja [README.md](README.md).
 
@@ -8,27 +8,29 @@
 
 ## **Funcionalidades Implementadas**
 
-- **Criação Automática de Conteúdo**: Gerar roteiros personalizados com base no tema fornecido.
-- **Narração de Áudio**: Transformar o roteiro em narração de alta qualidade, com suporte tanto ao ElevenLabs quanto ao OpenAI TTS.
-- **Reprocessamento de Áudio**: Reprocessar áudios que excedam uma duração especificada, garantindo compatibilidade com as restrições das plataformas.
-- **Geração de Legendas**: Gerar legendas com alinhamento e segmentação aprimorados:
-  - Tokeniza o texto transcrito, preservando a pontuação.
-  - Alinha palavras com seus respectivos timestamps e pontuações.
-  - Cria legendas legíveis e sincronizadas, com limites de caracteres e palavras por linha.
+- **Criação Automática de Conteúdo**: Geração de roteiros personalizados com base no tema fornecido.
+- **Narração de Áudio**: Transformação do roteiro em narração de alta qualidade, com suporte tanto ao ElevenLabs quanto ao OpenAI TTS.
+- **Reprocessamento de Áudio**: Reprocessamento de áudios que excedam uma duração especificada, garantindo compatibilidade com as restrições das plataformas.
+- **Geração de Legendas**: Criação de legendas com melhor alinhamento e segmentação:
+  - Tokenização do texto transcrito, preservando a pontuação.
+  - Alinhamento das palavras com seus respectivos timestamps e pontuações.
+  - Criação de legendas legíveis e sincronizadas, com limites de caracteres e palavras por linha.
 - **Geração de Imagens Aprimorada**:
-  - Gerar prompts diversificados para criação de imagens, utilizando o contexto completo das legendas e os prompts gerados anteriormente (quando disponíveis), assegurando variação e criatividade.
+  - Geração de prompts diversificados para criação de imagens, utilizando o contexto completo das legendas e os prompts gerados anteriormente (quando disponíveis), assegurando variação e criatividade.
   - Suporte à configuração da versão do modelo SANA via variável de ambiente.
-- **Suporte a Múltiplos Idiomas**: Permitir a criação de conteúdo, narração e legendas em diversos idiomas.
-- **Registro de Processo**: Salvar logs detalhados do andamento do processo – incluindo os prompts gerados para cada intervalo de imagem – na pasta de saída de cada vídeo.
+- **Montagem Final do Vídeo**: Composição do vídeo final utilizando o áudio, as imagens geradas e as legendas, aplicando transições animadas e mantendo a resolução de 1080x1920.
+- **Suporte a Múltiplos Idiomas**: Possibilidade de criação de conteúdo, narração e legendas em diversos idiomas.
+- **Registro de Processo**: Armazenamento de logs detalhados do andamento do processo – incluindo os prompts gerados para cada intervalo de imagem – na pasta de saída de cada vídeo.
 
 ---
 
 ## **Funcionalidades Planejadas**
 
-- **Integração de Música de Fundo**: Selecionar trilhas sonoras locais para enriquecer o vídeo.
-- **Imagens Relevantes**: Aperfeiçoar a seleção de imagens para ilustrar o conteúdo.
-- **Efeitos Visuais e Transições**: Aplicar zoom, animações e cortes suaves.
-- **Renderização Completa**: Criar o vídeo final pronto para publicação.
+- **Integração de Música de Fundo**: Seleção de trilhas sonoras locais para enriquecer o vídeo.
+- **Imagens Relevantes**: Aperfeiçoamento na seleção de imagens para ilustrar melhor o conteúdo.
+- **Efeitos Visuais e Transições**: Aplicação de zoom, animações e cortes suaves.
+- **Renderização Completa**: Criação do vídeo final pronto para publicação.
+- **Recursos Avançados de Edição de Vídeo**: Expansão das capacidades de montagem e edição para funcionalidades mais avançadas.
 
 ---
 
@@ -80,11 +82,12 @@ Os arquivos gerados serão salvos na pasta `output/`, incluindo:
 - Um arquivo de áudio (`.mp3`) com a narração.
 - Um arquivo de legendas (`.srt`) sincronizado com o áudio.
 - Um arquivo `process.log` contendo logs detalhados do andamento do processo, inclusive os prompts gerados para cada intervalo de imagem.
+- Um vídeo final (`_final.mp4`) montado com transições animadas, mantendo a resolução de 1080x1920.
 
 #### Abordagem para Legendas:
-O processo de geração de legendas garante alinhamento e legibilidade aprimorados:
+O processo de geração de legendas garante melhor alinhamento e legibilidade:
 - **Tokenização com Pontuação**: O texto completo transcrito é tokenizado em palavras e pontuações, preservando a ordem original.
-- **Alinhamento de Palavras e Pontuação**: Cada palavra é alinhada com seu token correspondente, garantindo que a pontuação esteja corretamente posicionada.
+- **Alinhamento de Palavras e Pontuação**: Cada palavra é alinhada com seu token correspondente, garantindo que a pontuação seja posicionada corretamente.
 - **Segmentação de Cues**: As legendas são divididas em segmentos menores (cues) com base em limites de palavras e caracteres por linha, mantendo a sincronização com os timestamps do áudio.
 
 ---
@@ -95,16 +98,18 @@ O processo de geração de legendas garante alinhamento e legibilidade aprimorad
 - Melhoria na geração de prompts para imagens, com diversificação e inclusão condicional dos prompts anteriores.
 - Suporte à configuração da versão do modelo SANA via variável de ambiente.
 - Inclusão de registro detalhado do processo, com logs salvos em cada pasta de saída de vídeo.
+- Implementação de um módulo de montagem final que integra áudio, imagens e legendas com transições animadas para compor o vídeo final na resolução de 1080x1920.
 
 ---
 
 ## **Próximos Passos**
 
 1. Estruturar o pipeline para criação de roteiros, narração e geração de imagens.
-2. Implementar efeitos visuais e transições entre imagens.
+2. Implementar efeitos visuais e transições adicionais entre imagens.
 3. Garantir a sincronização precisa entre áudio, imagens e legendas.
 4. Otimizar a renderização final para compatibilidade com plataformas de vídeos curtos.
 5. Expandir o suporte ao processamento de áudio, incluindo reprocessamento de arquivos longos e gerenciamento de limites definidos pelo usuário.
+6. Aprimorar as funcionalidades de edição de vídeo para recursos mais avançados.
 
 ---
 

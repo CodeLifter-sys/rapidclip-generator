@@ -1,6 +1,6 @@
 # **RapidClip**
 
-**RapidClip** is an ongoing project aimed at automating the creation of short videos, ideal for platforms like YouTube Shorts, Instagram Reels, TikTok, and Kwai. The goal is to enable the system to generate complete videos from a provided topic, combining narration, background music, dynamic images, visual effects, synchronized subtitles, and detailed process logging.
+**RapidClip** is an ongoing project aimed at automating the creation of short videos, ideal for platforms like YouTube Shorts, Instagram Reels, TikTok, and Kwai. The goal is to enable the system to generate complete videos from a provided topic, combining narration, background music, dynamic images, visual effects, synchronized subtitles, detailed process logging, and final video assembly with animated transitions.
 
 🇧🇷 For a Portuguese version of this README, see [README.pt-br.md](README.pt-br.md).
 
@@ -15,9 +15,10 @@
   - Tokenizes the transcript text while preserving punctuation.
   - Aligns words with their respective timestamps and punctuation.
   - Creates readable, synchronized subtitles with character and word limits per line.
-- **Enhanced Image Generation**: 
+- **Enhanced Image Generation**:
   - Generate diverse image prompts using an OpenAI-based prompt generator that leverages the full subtitle context and previously generated prompts (included only when available), ensuring varied and creative visual outputs.
   - Supports a configurable SANA model version for image generation via Replicate.
+- **Video Assembly**: Assemble a final video using the generated audio, images, and subtitles with animated transitions. A dedicated module composes these elements into a final video file with a resolution of 1080x1920.
 - **Multi-Language Support**: Enable content creation, narration, and subtitles in multiple languages.
 - **Process Logging**: Detailed logs of the overall video generation process, including the generated image prompts, are saved in each video's output folder.
 
@@ -29,6 +30,7 @@
 - **Relevant Images**: Further refine image selection to better illustrate the content.
 - **Visual Effects and Transitions**: Apply zoom, animations, and smooth cuts.
 - **Complete Rendering**: Create the final video ready for publication.
+- **Additional Video Editing Enhancements**: Expand features for more advanced video composition and editing.
 
 ---
 
@@ -80,6 +82,7 @@ The generated files will be saved in the `output/` folder, including:
 - An audio file (`.mp3`) containing the narration.
 - A subtitle file (`.srt`) synchronized with the audio.
 - A `process.log` file containing detailed logs of the video generation process, including the image prompts generated for each subtitle interval.
+- A final video file (`_final.mp4`) assembled with animated transitions.
 
 #### Subtitle Approach:
 The subtitle generation process ensures improved alignment and readability:
@@ -91,17 +94,23 @@ The subtitle generation process ensures improved alignment and readability:
 
 ## **Project Status**
 
-**RapidClip** is in its initial development phase. The core functionalities are in place, and recent updates include enhanced image generation prompts with diversity and process logging, as well as support for a configurable SANA model version. Continuous improvements are being made to ensure an efficient and intuitive workflow.
+**RapidClip** is in its initial development phase. The core functionalities are in place, and recent updates include:
+- Enhanced image generation prompts with diversity and process logging.
+- Support for a configurable SANA model version.
+- Implementation of a video assembly module that combines audio, images, and subtitles with animated transitions to produce a final video at 1080x1920 resolution.
+
+Continuous improvements are being made to ensure an efficient and intuitive workflow.
 
 ---
 
 ## **Next Steps**
 
 1. Structure the pipeline for creating scripts, narration, and generating images.
-2. Implement visual effects and transitions between images.
+2. Implement additional visual effects and transitions between images.
 3. Ensure precise synchronization of audio, images, and subtitles.
 4. Optimize final rendering to ensure compatibility with short video platforms.
 5. Expand support for audio processing, including reprocessing long audio files and handling user-defined duration limits.
+6. Enhance video editing capabilities for more advanced features.
 
 ---
 
