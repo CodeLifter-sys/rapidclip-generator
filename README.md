@@ -1,6 +1,6 @@
 # **RapidClip**
 
-**RapidClip** is an ongoing project aimed at automating the creation of short videos, ideal for platforms like YouTube Shorts, Instagram Reels, TikTok, and Kwai. The goal is to enable the system to generate complete videos from a provided topic, combining narration, background music, dynamic images, visual effects, and synchronized subtitles.
+**RapidClip** is an ongoing project aimed at automating the creation of short videos, ideal for platforms like YouTube Shorts, Instagram Reels, TikTok, and Kwai. The goal is to enable the system to generate complete videos from a provided topic, combining narration, background music, dynamic images, visual effects, synchronized subtitles, and detailed process logging.
 
 🇧🇷 For a Portuguese version of this README, see [README.pt-br.md](README.pt-br.md).
 
@@ -9,20 +9,24 @@
 ## **Implemented Features**
 
 - **Automatic Content Creation**: Generate personalized scripts based on the provided topic.
-- **Audio Narration**: Transform the script into high-quality narration, now with support for both ElevenLabs and OpenAI TTS.
+- **Audio Narration**: Transform the script into high-quality narration, with support for both ElevenLabs and OpenAI TTS.
 - **Audio Reprocessing**: Reprocess audio files that exceed a specified duration to ensure compatibility with platform constraints.
 - **Subtitle Generation**: Generate subtitles with improved alignment and segmentation:
   - Tokenizes the transcript text while preserving punctuation.
   - Aligns words with their respective timestamps and punctuation.
   - Creates readable, synchronized subtitles with character and word limits per line.
+- **Enhanced Image Generation**: 
+  - Generate diverse image prompts using an OpenAI-based prompt generator that leverages the full subtitle context and previously generated prompts (included only when available), ensuring varied and creative visual outputs.
+  - Supports a configurable SANA model version for image generation via Replicate.
 - **Multi-Language Support**: Enable content creation, narration, and subtitles in multiple languages.
+- **Process Logging**: Detailed logs of the overall video generation process, including the generated image prompts, are saved in each video's output folder.
 
 ---
 
 ## **Planned Features**
 
 - **Background Music Integration**: Select local soundtracks to enrich the video.
-- **Relevant Images**: Automatically generate images to illustrate the content.
+- **Relevant Images**: Further refine image selection to better illustrate the content.
 - **Visual Effects and Transitions**: Apply zoom, animations, and smooth cuts.
 - **Complete Rendering**: Create the final video ready for publication.
 
@@ -35,6 +39,8 @@ Before running RapidClip, make sure to configure the required environment variab
 ```plaintext
 OPENAI_API_KEY=your-openai-api-key
 ELEVENLABS_API_KEY=your-elevenlabs-api-key
+REPLICATE_API_TOKEN=your-replicate-api-token
+SANA_MODEL_VERSION=your-sana-model-version
 ```
 
 After configuring the environment variables, you can run RapidClip using one of the following commands.
@@ -73,6 +79,7 @@ python src/main.py --theme "Curiosities of Technology (a single curiosity)" \
 The generated files will be saved in the `output/` folder, including:
 - An audio file (`.mp3`) containing the narration.
 - A subtitle file (`.srt`) synchronized with the audio.
+- A `process.log` file containing detailed logs of the video generation process, including the image prompts generated for each subtitle interval.
 
 #### Subtitle Approach:
 The subtitle generation process ensures improved alignment and readability:
@@ -84,7 +91,7 @@ The subtitle generation process ensures improved alignment and readability:
 
 ## **Project Status**
 
-**RapidClip** is in its initial development phase. Features are being implemented and tested to ensure an efficient and intuitive workflow.
+**RapidClip** is in its initial development phase. The core functionalities are in place, and recent updates include enhanced image generation prompts with diversity and process logging, as well as support for a configurable SANA model version. Continuous improvements are being made to ensure an efficient and intuitive workflow.
 
 ---
 
