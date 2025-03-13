@@ -1,11 +1,41 @@
-Segue abaixo o README.pt-br.md atualizado, com uma nova seção "Vídeos de Demonstração" que incorpora dois vídeos de demonstração (assumindo que eles estão disponíveis no repositório, por exemplo, na pasta `demos/`):
-
-```markdown
 # **RapidClip**
 
 **RapidClip** é um projeto que automatiza a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. A versão atual permite gerar vídeos completos a partir de um tema fornecido, combinando narração, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo e montagem final do vídeo com transições animadas.
 
 🇺🇸 Para a versão em inglês deste README, veja [README.md](README.md).
+
+---
+
+## **Vídeos de Demonstração gerados pelo RapidClip:**
+
+<table>
+  <thead>
+    <tr>
+      <th align="center"><g-emoji alias="arrow_forward">▶️</g-emoji> Demonstração 1</th>
+      <th align="center"><g-emoji alias="arrow_forward">▶️</g-emoji> Demonstração 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <video controls width="480">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mp4" type="video/mp4">
+          Seu navegador não suporta o elemento de vídeo.
+        </video>
+        <br>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mp4" download>Baixar Demonstração 1</a>
+      </td>
+      <td align="center">
+        <video controls width="480">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mp4" type="video/mp4">
+          Seu navegador não suporta o elemento de vídeo.
+        </video>
+        <br>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mp4" download>Baixar Demonstração 2</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -92,39 +122,6 @@ O processo de geração de legendas garante melhor alinhamento e legibilidade:
 - **Tokenização com Pontuação**: O texto completo transcrito é tokenizado em palavras e pontuações, preservando a ordem original.
 - **Alinhamento de Palavras e Pontuação**: Cada palavra é alinhada com seu token correspondente, garantindo que a pontuação seja posicionada corretamente.
 - **Segmentação de Cues**: As legendas são divididas em segmentos menores (cues) com base em limites de palavras e caracteres por linha, mantendo a sincronização com os timestamps do áudio.
-
----
-
-## **Vídeos de Demonstração**
-
-<table>
-  <thead>
-    <tr>
-      <th align="center"><g-emoji alias="arrow_forward">▶️</g-emoji> Demonstração 1</th>
-      <th align="center"><g-emoji alias="arrow_forward">▶️</g-emoji> Demonstração 2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">
-        <video controls width="480">
-          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mp4" type="video/mp4">
-          Seu navegador não suporta o elemento de vídeo.
-        </video>
-        <br>
-        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mp4" download>Baixar Demonstração 1</a>
-      </td>
-      <td align="center">
-        <video controls width="480">
-          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mp4" type="video/mp4">
-          Seu navegador não suporta o elemento de vídeo.
-        </video>
-        <br>
-        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mp4" download>Baixar Demonstração 2</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
 
 ---
 
