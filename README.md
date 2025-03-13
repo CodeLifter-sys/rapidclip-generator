@@ -8,29 +8,29 @@
 
 ## **Implemented Features**
 
-- **Automatic Content Creation**: Personalized script generation based on the provided theme.
+- **Automatic Content Creation**: Personalized script generation based on the provided topic.
 - **Audio Narration**: Transformation of the script into high-quality narration, with support for both ElevenLabs and OpenAI TTS.
-- **Audio Reprocessing**: Processing of audio files that exceed a specified duration to ensure compatibility with platform restrictions.
+- **Audio Reprocessing**: Reprocessing of audio that exceeds a specified duration, ensuring compatibility with platform restrictions.
 - **Subtitle Generation**: Creation of subtitles with improved alignment and segmentation:
   - Tokenization of the full transcribed text while preserving punctuation.
-  - Alignment of words with their respective timestamps and punctuation.
+  - Alignment of words with their corresponding timestamps and punctuation.
   - Generation of legible and synchronized subtitles with character and word limits per line.
 - **Enhanced Image Generation**:
-  - Generation of diversified prompts for image creation, using the complete subtitle context and previously generated prompts (when available) to ensure varied and creative visual outputs.
+  - Generation of diversified prompts for image creation, utilizing the full subtitle context and previously generated prompts (when available) to ensure varied and creative visual outputs.
   - Support for configuring the SANA model version via an environment variable.
-- **Final Video Assembly**: Composition of the final video using the generated audio, images, and subtitles, with animated transitions (including a slow zoom-in effect on images) and a resolution of 1080x1920.
+- **Final Video Assembly**: Composition of the final video using the generated audio, images, and subtitles, with animated transitions (including a zoom-in effect) and a resolution of 1080x1920.
 - **Relevant Images**: Improved selection of images to better illustrate the content.
-- **Visual Effects and Transitions**: Application of zoom effects, animations, and additional smooth cuts.
+- **Visual Effects and Transitions**: Application of zoom, animations, and additional smooth cuts.
 - **Complete Rendering**: Creation of the final video ready for publication.
-- **Multi-Language Support**: Ability to create content, narration, and subtitles in multiple languages.
-- **Process Logging**: Detailed logging of the entire video generation process – including the prompts generated for each image interval – stored in each video's output folder.
+- **Multi-Language Support**: The ability to create content, narration, and subtitles in multiple languages.
+- **Process Logging**: Storage of detailed logs of the entire process – including the prompts generated for each image interval – in each video’s output folder.
 
 ---
 
 ## **Planned Features**
 
-- **Background Music Integration**: Selection of royalty-free soundtracks to enrich the video.
-- **Advanced Video Editing Features**: Expansion of editing capabilities for more sophisticated functionalities.
+- **Background Music Integration**: Selection of local soundtracks to enhance the video.
+- **Advanced Video Editing Features**: Expansion of editing capabilities for more advanced functionalities.
 
 ---
 
@@ -45,7 +45,7 @@ REPLICATE_API_TOKEN=your-replicate-api-token
 SANA_MODEL_VERSION=your-sana-model-version
 ```
 
-After setting up the environment variables, you can run RapidClip using one of the commands below.
+After setting the variables, you can run RapidClip using one of the commands below.
 
 ### Example with ElevenLabs TTS
 
@@ -81,7 +81,7 @@ python src/main.py --theme "Technology Curiosities (a single curiosity)" \
 The generated files will be saved in the `output/` folder, including:
 - An audio file (`.mp3`) with the narration.
 - A subtitle file (`.srt`) synchronized with the audio.
-- A `process.log` file containing detailed logs of the video generation process, including the prompts generated for each image interval.
+- A `process.log` file containing detailed logs of the process, including the prompts generated for each image interval.
 - A final video (`_final.mp4`) assembled with animated transitions, maintaining a resolution of 1080x1920.
 
 #### Subtitle Approach:
@@ -92,13 +92,29 @@ The subtitle generation process ensures better alignment and readability:
 
 ---
 
+## **Demonstration Videos**
+
+### Demo 1
+<video controls width="480">
+  <source src="demos/en/space.mp4" type="video/mp4">
+  Your browser does not support the video element.
+</video>
+
+### Demo 2
+<video controls width="480">
+  <source src="demos/en/technology.mp4" type="video/mp4">
+  Your browser does not support the video element.
+</video>
+
+---
+
 ## **Project Status**
 
-**RapidClip** is now in its first stable version. The core functionalities have been implemented and thoroughly tested, including:
+**RapidClip** is now in its first stable release. The core functionalities have been implemented and thoroughly tested, including:
 - Generation of scripts, narration, subtitles, and images with diversified prompts.
-- Final video assembly with animated transitions and a slow zoom-in effect on images, producing a final video at 1080x1920 resolution.
-- Improved image selection and visual effects.
-- Detailed process logging with logs saved in each video's output folder.
+- Final video assembly with animated transitions and a zoom-in effect on images, producing a final video at 1080x1920 resolution.
+- Improved selection of images and application of visual effects.
+- Detailed process logging with logs stored in each video's output folder.
 - Support for configuring the SANA model version via an environment variable.
 
 ---
@@ -121,7 +137,7 @@ We welcome contributions! If you would like to collaborate on the project, pleas
    ```
 3. Make your changes and submit a pull request detailing your modifications.
 
-Your help is greatly appreciated to make RapidClip even better!
+Your help is greatly appreciated in making RapidClip even better!
 
 ---
 

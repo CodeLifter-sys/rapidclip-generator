@@ -1,6 +1,9 @@
+Segue abaixo o README.pt-br.md atualizado, com uma nova seção "Vídeos de Demonstração" que incorpora dois vídeos de demonstração (assumindo que eles estão disponíveis no repositório, por exemplo, na pasta `demos/`):
+
+```markdown
 # **RapidClip**
 
-**RapidClip** é um projeto que automatiza a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. A versão atual permite gerar vídeos completos a partir de um tema fornecido, combinando narração, música de fundo, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo e montagem final do vídeo com transições animadas.
+**RapidClip** é um projeto que automatiza a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. A versão atual permite gerar vídeos completos a partir de um tema fornecido, combinando narração, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo e montagem final do vídeo com transições animadas.
 
 🇺🇸 Para a versão em inglês deste README, veja [README.md](README.md).
 
@@ -18,7 +21,10 @@
 - **Geração de Imagens Aprimorada**:
   - Geração de prompts diversificados para criação de imagens, utilizando o contexto completo das legendas e os prompts gerados anteriormente (quando disponíveis), assegurando variação e criatividade.
   - Suporte à configuração da versão do modelo SANA via variável de ambiente.
-- **Montagem Final do Vídeo**: Composição do vídeo final utilizando o áudio, as imagens geradas e as legendas, com transições animadas (incluindo um efeito de zoom in lento nas imagens) e mantendo a resolução de 1080x1920. O primeiro frame do vídeo é a primeira imagem gerada.
+- **Montagem Final do Vídeo**: Composição do vídeo final utilizando o áudio, as imagens geradas e as legendas, com transições animadas (incluindo efeito de zoom in) e mantendo a resolução de 1080x1920.
+- **Imagens Relevantes**: Aperfeiçoamento na seleção de imagens para ilustrar melhor o conteúdo.
+- **Efeitos Visuais e Transições**: Aplicação de zoom, animações e cortes suaves adicionais.
+- **Renderização Completa**: Criação do vídeo final pronto para publicação.
 - **Suporte a Múltiplos Idiomas**: Possibilidade de criação de conteúdo, narração e legendas em diversos idiomas.
 - **Registro de Processo**: Armazenamento de logs detalhados do andamento do processo – incluindo os prompts gerados para cada intervalo de imagem – na pasta de saída de cada vídeo.
 
@@ -27,16 +33,13 @@
 ## **Funcionalidades Planejadas**
 
 - **Integração de Música de Fundo**: Seleção de trilhas sonoras locais para enriquecer o vídeo.
-- **Imagens Relevantes**: Aperfeiçoamento na seleção de imagens para ilustrar melhor o conteúdo.
-- **Efeitos Visuais e Transições**: Aplicação de zoom, animações e cortes suaves adicionais.
-- **Renderização Completa**: Criação do vídeo final pronto para publicação.
 - **Recursos Avançados de Edição de Vídeo**: Expansão das capacidades de montagem e edição para funcionalidades mais avançadas.
 
 ---
 
 ## **Como Usar**
 
-Antes de executar o RapidClip, configure as variáveis de ambiente necessárias. Utilize o arquivo `.env.example` como modelo e crie um arquivo `.env` com as seguintes variáveis:
+Antes de executar o RapidClip, certifique-se de configurar as variáveis de ambiente necessárias. Utilize o arquivo `.env.example` como modelo e crie um arquivo `.env` com as seguintes variáveis:
 
 ```plaintext
 OPENAI_API_KEY=your-openai-api-key
@@ -45,7 +48,7 @@ REPLICATE_API_TOKEN=your-replicate-api-token
 SANA_MODEL_VERSION=your-sana-model-version
 ```
 
-Após configurar as variáveis, execute o RapidClip utilizando um dos comandos abaixo.
+Após configurar as variáveis, você pode executar o RapidClip utilizando um dos comandos abaixo.
 
 ### Exemplo com ElevenLabs TTS
 
@@ -92,22 +95,37 @@ O processo de geração de legendas garante melhor alinhamento e legibilidade:
 
 ---
 
+## **Vídeos de Demonstração**
+
+### Demonstração 1
+<video controls width="480">
+  <source src="demos/pt-br/espaco.mp4" type="video/mp4">
+  Seu navegador não suporta o elemento de vídeo.
+</video>
+
+### Demonstração 2
+<video controls width="480">
+  <source src="demos/pt-br/tecnologia.mp4" type="video/mp4">
+  Seu navegador não suporta o elemento de vídeo.
+</video>
+
+---
+
 ## **Status do Projeto**
 
-**RapidClip** está consolidado em sua versão atual. As funcionalidades principais foram implementadas e testadas, incluindo:
-- Geração de roteiros, narração, legendas, e imagens com prompts diversificados.
+**RapidClip** consolidou sua versão inicial. As funcionalidades principais foram implementadas e testadas, incluindo:
+- Geração de roteiros, narração, legendas e imagens com prompts diversificados.
 - Montagem final do vídeo com transições animadas e efeito de zoom in nas imagens.
+- Aperfeiçoamento na seleção de imagens e aplicação de efeitos visuais.
 - Registro detalhado do processo com logs salvos na pasta de saída de cada vídeo.
 - Suporte à configuração da versão do modelo SANA via variável de ambiente.
 
-Apesar da versão atual estar consolidada, os seguintes planos futuros permanecem:
+---
 
-- **Integração de Música de Fundo**: Selecionar trilhas sonoras locais para enriquecer o vídeo.
-- **Imagens Relevantes**: Aperfeiçoar a seleção de imagens para ilustrar melhor o conteúdo.
-- **Efeitos Visuais e Transições**: Aplicar zoom, animações e cortes suaves adicionais.
-- **Renderização Completa**: Otimizar o vídeo final para compatibilidade com plataformas de vídeos curtos.
-- **Recursos Avançados de Edição de Vídeo**: Expandir as capacidades de montagem e edição para funcionalidades mais avançadas.
-- **Suporte Avançado ao Processamento de Áudio**: Incluir reprocessamento de arquivos longos e gerenciamento de limites definidos pelo usuário.
+## **Próximos Passos**
+
+1. Implementar trilha sonora de fundo livre de direitos autorais.
+2. Implementar recursos avançados de edição de vídeo para funcionalidades mais sofisticadas.
 
 ---
 
