@@ -97,17 +97,30 @@ O processo de geração de legendas garante melhor alinhamento e legibilidade:
 
 ## **Vídeos de Demonstração**
 
-### Demonstração 1
-<video controls width="480">
-  <source src="demos/pt-br/espaco.mp4" type="video/mp4">
-  Seu navegador não suporta o elemento de vídeo.
-</video>
-
-### Demonstração 2
-<video controls width="480">
-  <source src="demos/pt-br/tecnologia.mp4" type="video/mp4">
-  Seu navegador não suporta o elemento de vídeo.
-</video>
+<table>
+  <thead>
+    <tr>
+      <th align="center"><g-emoji alias="arrow_forward">▶️</g-emoji> Demonstração 1</th>
+      <th align="center"><g-emoji alias="arrow_forward">▶️</g-emoji> Demonstração 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <video controls width="480">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mp4" type="video/mp4">
+          Seu navegador não suporta o elemento de vídeo.
+        </video>
+      </td>
+      <td align="center">
+        <video controls width="480">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mp4" type="video/mp4">
+          Seu navegador não suporta o elemento de vídeo.
+        </video>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 

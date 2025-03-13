@@ -94,17 +94,33 @@ The subtitle generation process ensures better alignment and readability:
 
 ## **Demonstration Videos**
 
-### Demo 1
-<video controls width="480">
-  <source src="https://github.com/itallonardi/rapidclip-generator/blob/main/demos/en/space.mp4" type="video/mp4">
-  Your browser does not support the video element.
-</video>
+## Demonstration Videos
 
-### Demo 2
-<video controls width="480">
-  <source src="https://github.com/itallonardi/rapidclip-generator/blob/main/demos/en/technology.mp4" type="video/mp4">
-  Your browser does not support the video element.
-</video>
+<table>
+  <thead>
+    <tr>
+      <th align="center"><g-emoji alias="arrow_forward">▶️</g-emoji> Demo 1</th>
+      <th align="center"><g-emoji alias="arrow_forward">▶️</g-emoji> Demo 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center">
+        <video controls width="480">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/space.mp4" type="video/mp4">
+          Your browser does not support the video element.
+        </video>
+      </td>
+      <td align="center">
+        <video controls width="480">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/technology.mp4" type="video/mp4">
+          Your browser does not support the video element.
+        </video>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 ---
 
