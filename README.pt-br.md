@@ -111,12 +111,16 @@ O processo de geração de legendas garante melhor alinhamento e legibilidade:
           <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mp4" type="video/mp4">
           Seu navegador não suporta o elemento de vídeo.
         </video>
+        <br>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mp4" download>Baixar Demonstração 1</a>
       </td>
       <td align="center">
         <video controls width="480">
           <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mp4" type="video/mp4">
           Seu navegador não suporta o elemento de vídeo.
         </video>
+        <br>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mp4" download>Baixar Demonstração 2</a>
       </td>
     </tr>
   </tbody>
