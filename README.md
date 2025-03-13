@@ -96,13 +96,13 @@ The subtitle generation process ensures better alignment and readability:
 
 ### Demo 1
 <video controls width="480">
-  <source src="demos/en/space.mp4" type="video/mp4">
+  <source src="https://github.com/itallonardi/rapidclip-generator/blob/main/demos/en/space.mp4" type="video/mp4">
   Your browser does not support the video element.
 </video>
 
 ### Demo 2
 <video controls width="480">
-  <source src="demos/en/technology.mp4" type="video/mp4">
+  <source src="https://github.com/itallonardi/rapidclip-generator/blob/main/demos/en/technology.mp4" type="video/mp4">
   Your browser does not support the video element.
 </video>
 
