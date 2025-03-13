@@ -94,8 +94,6 @@ The subtitle generation process ensures better alignment and readability:
 
 ## **Demonstration Videos**
 
-## Demonstration Videos
-
 <table>
   <thead>
     <tr>
