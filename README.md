@@ -69,7 +69,7 @@
 
 ## **How to Use**
 
-Before running RapidClip, ensure that the required environment variables are set. Use the `.env.example` file as a template and create a `.env` file with the following variables:
+Before running RapidClip, you need to set up your environment by creating a `.env` file from the provided `.env.example` template. Define the following variables:
 
 ```plaintext
 OPENAI_API_KEY=your-openai-api-key
@@ -78,10 +78,27 @@ REPLICATE_API_TOKEN=your-replicate-api-token
 SANA_MODEL_VERSION=your-sana-model-version
 ```
 
-After setting the variables, you can run RapidClip using one of the commands below.
+---
 
-### Example with ElevenLabs TTS
+## **Running RapidClip**
 
+### **Using Docker**
+
+RapidClip can run inside a Docker container, providing an isolated and easy-to-setup environment. For detailed instructions, refer to [README.DOCKER.md](README.DOCKER.md).
+
+### **Local Setup (without Docker)**
+
+If you prefer running RapidClip directly on your machine, follow these steps:
+
+**1. Install dependencies:**
+
+```bash
+pip install -r requirements.txt
+```
+
+**2. Generate your video:**
+
+**With ElevenLabs TTS (Recommended):**
 ```bash
 python src/main.py --theme "Space Curiosities (a single curiosity)" \
   --language "en" \
@@ -90,8 +107,7 @@ python src/main.py --theme "Space Curiosities (a single curiosity)" \
   --tts_service elevenlabs
 ```
 
-### Example with OpenAI TTS
-
+**With OpenAI TTS:**
 ```bash
 python src/main.py --theme "Technology Curiosities (a single curiosity)" \
   --language "en" \
@@ -101,27 +117,27 @@ python src/main.py --theme "Technology Curiosities (a single curiosity)" \
   --openai_tts_voice "onyx"
 ```
 
-### Parameters:
-- `--theme`: The theme of the script to be created.
-- `--language`: The language for the script and narration.
-- `--tts_service`: The TTS service to use (`elevenlabs` or `openai`). Defaults to `elevenlabs`.
-- `--voice_id`: The voice ID to be used for narration (required for ElevenLabs).
-- `--openai_tts_model`: The OpenAI TTS model to be used (default: `tts-1-hd`).
-- `--openai_tts_voice`: The OpenAI TTS voice to be used (default: `alloy`).
-- `--max_duration`: The maximum allowed duration for the audio (in seconds).
+### **Parameters:**
+- `--theme`: The topic for the video script.
+- `--language`: Script and narration language.
+- `--tts_service`: Choose between `elevenlabs` (default) or `openai`.
+- `--voice_id`: Required if using ElevenLabs.
+- `--openai_tts_model`: OpenAI TTS model (default: `tts-1-hd`).
+- `--openai_tts_voice`: Voice selection for OpenAI TTS (default: `alloy`).
+- `--max_duration`: Maximum audio duration in seconds.
 
-### Output:
-The generated files will be saved in the `output/` folder, including:
-- An audio file (`.mp3`) with the narration.
-- A subtitle file (`.srt`) synchronized with the audio.
-- A `process.log` file containing detailed logs of the process, including the prompts generated for each image interval.
-- A final video (`_final.mp4`) assembled with animated transitions, maintaining a resolution of 1080x1920.
+### **Generated Output:**
 
-#### Subtitle Approach:
-The subtitle generation process ensures better alignment and readability:
-- **Punctuation Tokenization**: The full transcribed text is tokenized into words and punctuation, preserving the original order.
-- **Word-Punctuation Alignment**: Each word is aligned with its corresponding token, ensuring correct punctuation placement.
-- **Cue Segmentation**: Subtitles are divided into smaller segments (cues) based on character and word limits per line, maintaining synchronization with the audio timestamps.
+Your generated files will appear in the `output/` folder:
+- **Audio (`.mp3`)**: Narration audio.
+- **Subtitles (`.srt`)**: Synchronized subtitles.
+- **Logs (`process.log`)**: Detailed logs of the process.
+- **Final Video (`_final.mp4`)**: Rendered video with subtitles and transitions (resolution: 1080x1920).
+
+### **Subtitle Generation Approach:**
+- **Punctuation Tokenization**: Preserves original punctuation.
+- **Word-Punctuation Alignment**: Ensures correct punctuation placement.
+- **Cue Segmentation**: Subtitles segmented by character and word limits for readability and synchronization.
 
 ---
 

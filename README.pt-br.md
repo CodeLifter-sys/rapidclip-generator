@@ -67,21 +67,38 @@
 
 ---
 
-## **Como Usar**
+## **Como Usar o RapidClip**
 
-Antes de executar o RapidClip, certifique-se de configurar as variáveis de ambiente necessárias. Utilize o arquivo `.env.example` como modelo e crie um arquivo `.env` com as seguintes variáveis:
+Antes de utilizar o RapidClip, é necessário configurar as variáveis de ambiente. Utilize o arquivo `.env.example` como modelo para criar seu próprio arquivo `.env`, contendo as seguintes variáveis:
 
 ```plaintext
-OPENAI_API_KEY=your-openai-api-key
-ELEVENLABS_API_KEY=your-elevenlabs-api-key
-REPLICATE_API_TOKEN=your-replicate-api-token
-SANA_MODEL_VERSION=your-sana-model-version
+OPENAI_API_KEY=sua-chave-api-openai
+ELEVENLABS_API_KEY=sua-chave-api-elevenlabs
+REPLICATE_API_TOKEN=sua-chave-api-replicate
+SANA_MODEL_VERSION=versao-do-modelo-sana
 ```
 
-Após configurar as variáveis, você pode executar o RapidClip utilizando um dos comandos abaixo.
+---
 
-### Exemplo com ElevenLabs TTS
+## **Execução do RapidClip**
 
+### **Usando Docker**
+
+Você pode executar o RapidClip via Docker, facilitando o uso em um ambiente isolado com todas as dependências pré-instaladas. Para mais detalhes, consulte o [README.DOCKER.md](README.DOCKER.md).
+
+### **Execução local (sem Docker)**
+
+Se preferir rodar o projeto diretamente na sua máquina, siga os passos abaixo:
+
+**1. Instale as dependências:**
+
+```bash
+pip install -r requirements.txt
+```
+
+**2. Gere o vídeo:**
+
+**Usando ElevenLabs TTS:**
 ```bash
 python src/main.py --theme "Curiosidades do Espaço (uma única curiosidade)" \
   --language "pt-BR" \
@@ -90,38 +107,37 @@ python src/main.py --theme "Curiosidades do Espaço (uma única curiosidade)" \
   --tts_service elevenlabs
 ```
 
-### Exemplo com OpenAI TTS
-
+**Usando OpenAI TTS:**
 ```bash
 python src/main.py --theme "Curiosidades da Tecnologia (uma única curiosidade)" \
   --language "pt-BR" \
   --max_duration 60 \
   --tts_service openai \
   --openai_tts_model "tts-1-hd" \
-  --openai_tts_voice "alloy"
+  --openai_tts_voice "onyx"
 ```
 
-### Parâmetros:
-- `--theme`: O tema do roteiro a ser criado.
-- `--language`: O idioma do roteiro e da narração.
-- `--tts_service`: O serviço de TTS a ser utilizado (`elevenlabs` ou `openai`). O padrão é `elevenlabs`.
-- `--voice_id`: O ID da voz a ser utilizada para a narração (obrigatório para ElevenLabs).
-- `--openai_tts_model`: O modelo de TTS da OpenAI a ser utilizado (padrão: `tts-1-hd`).
-- `--openai_tts_voice`: A voz da OpenAI a ser utilizada (padrão: `alloy`).
-- `--max_duration`: A duração máxima permitida para o áudio (em segundos).
+### **Parâmetros:**
+- `--theme`: Tema do roteiro do vídeo.
+- `--language`: Idioma do roteiro e da narração.
+- `--tts_service`: Escolha entre `elevenlabs` (padrão) ou `openai`.
+- `--voice_id`: Necessário ao utilizar ElevenLabs.
+- `--openai_tts_model`: Modelo de TTS do OpenAI (padrão: `tts-1-hd`).
+- `--openai_tts_voice`: Voz utilizada pelo OpenAI TTS (padrão: `alloy`).
+- `--max_duration`: Duração máxima do áudio em segundos.
 
-### Saída:
-Os arquivos gerados serão salvos na pasta `output/`, incluindo:
-- Um arquivo de áudio (`.mp3`) com a narração.
-- Um arquivo de legendas (`.srt`) sincronizado com o áudio.
-- Um arquivo `process.log` contendo logs detalhados do andamento do processo, inclusive os prompts gerados para cada intervalo de imagem.
-- Um vídeo final (`_final.mp4`) montado com transições animadas, mantendo a resolução de 1080x1920.
+### **Arquivos gerados:**
 
-#### Abordagem para Legendas:
-O processo de geração de legendas garante melhor alinhamento e legibilidade:
-- **Tokenização com Pontuação**: O texto completo transcrito é tokenizado em palavras e pontuações, preservando a ordem original.
-- **Alinhamento de Palavras e Pontuação**: Cada palavra é alinhada com seu token correspondente, garantindo que a pontuação seja posicionada corretamente.
-- **Segmentação de Cues**: As legendas são divididas em segmentos menores (cues) com base em limites de palavras e caracteres por linha, mantendo a sincronização com os timestamps do áudio.
+Os arquivos gerados estarão disponíveis na pasta `output/`:
+- **Áudio (`.mp3`)**: Arquivo com a narração.
+- **Legendas (`.srt`)**: Legendas sincronizadas.
+- **Logs (`process.log`)**: Registro detalhado do processo.
+- **Vídeo final (`_final.mp4`)**: Vídeo renderizado com legendas e transições (resolução: 1080x1920).
+
+### **Abordagem das legendas:**
+- **Tokenização com pontuação**: Preserva a pontuação original.
+- **Alinhamento de palavras e pontuação**: Assegura posicionamento correto das pontuações.
+- **Segmentação em cues**: Legendas divididas em segmentos menores para melhor legibilidade e sincronização.
 
 ---
 
