@@ -29,19 +29,22 @@ class OpenAIService:
 
     def generate_script(self, theme: str, language: str) -> str:
         """
-        Generate a short script for a video based on the theme and language.
+        Generate a humanized, conversational short video script.
 
         Args:
             theme (str): The subject of the script.
             language (str): The language in which the script is written.
 
         Returns:
-            str: The generated script.
+            str: The generated script with natural speech elements.
         """
         prompt = (
-            f"You are a scriptwriter specializing in creating short scripts for videos up to 60 seconds, such as "
-            f"YouTube Shorts, Reels, and TikTok. Create an engaging, informative, and concise script for the following theme: "
-            f"'{theme}'. Provide only the narration text without any scene directions or additional notes. The script should be in {language}."
+            f"You are a skilled scriptwriter specialized in writing engaging, informal, and conversational scripts "
+            f"for short videos (up to 60 seconds), such as YouTube Shorts, Reels, and TikTok. "
+            f"Write a natural and authentic narration script about '{theme}' in {language}. "
+            f"Include informal expressions, brief pauses (indicated by ellipses '...'), thoughtful interjections "
+            f"('hmmm', 'you know'), casual laughter ('haha'), and other conversational elements to make the script "
+            f"feel genuinely human and relatable. Do not include any scene directions or notes—only provide the narration text."
         )
         result = self.agent.run_sync(prompt)
         return result.data
@@ -137,7 +140,7 @@ class OpenAIService:
 
     def generate_script_and_voice_instructions(self, theme: str, language: str) -> dict:
         """
-        Generates a JSON object containing the script and voice instructions.
+        Generates a JSON object containing the script and balanced humanized voice instructions.
 
         Args:
             theme (str): The theme for the script.
@@ -147,23 +150,31 @@ class OpenAIService:
             dict: Object with the keys "script" and "voice_instructions".
         """
         prompt = (
-            f"You are a creative scriptwriter and a specialist in short video narration. "
-            f"For the theme '{theme}', generate a JSON object containing the keys 'script' and 'voice_instructions'. "
-            f"The 'script' should contain the narration text. The 'voice_instructions' should be an object with the following keys: "
-            f"'accent_affect', 'tone', 'pacing', 'emotion', 'pronunciation', and 'personality_affect'.\n\n"
-            "Example response:\n"
+            f"You are a creative scriptwriter specializing in engaging short video narrations "
+            f"for short videos (up to 60 seconds), such as YouTube Shorts, Reels, and TikTok. "
+            f"Write a natural, conversational narration script about '{theme}' in {language}. "
+            f"Include realistic speech nuances sparingly and naturally, such as occasional short pauses (indicated by ellipses '...'), "
+            f"thoughtful interjections ('hmmm...', 'well...', 'you know...'), or light laughter ('haha') only when truly appropriate. "
+            f"Do NOT overuse pauses or expressions; keep them subtle and realistic, as in a genuine casual conversation. "
+            f"Along with the script, provide detailed voice instructions under the key 'voice_instructions', specifying:\n"
+            f"- 'accent_affect': brief description of accent nuances\n"
+            f"- 'tone': overall mood (friendly, humorous, thoughtful, etc.)\n"
+            f"- 'pacing': speech speed and rhythm (relaxed, dynamic, steady, etc.)\n"
+            f"- 'emotion': primary emotional tone (enthusiastic, curious, playful, etc.)\n"
+            f"- 'pronunciation': specific pronunciation notes if needed\n"
+            f"- 'personality_affect': influence of personality on voice style\n\n"
+            "Respond strictly as a JSON object without explanations or additional text. Example:\n"
             "{\n"
-            '  "script": "Your narration text here",\n'
+            '  "script": "Your balanced narration text here",\n'
             '  "voice_instructions": {\n'
-            '    "accent_affect": "detailed description",\n'
-            '    "tone": "detailed description",\n'
-            '    "pacing": "detailed description",\n'
-            '    "emotion": "detailed description",\n'
-            '    "pronunciation": "detailed description",\n'
-            '    "personality_affect": "detailed description"\n'
+            '    "accent_affect": "neutral American accent, conversational",\n'
+            '    "tone": "friendly and informative",\n'
+            '    "pacing": "steady with occasional natural pauses",\n'
+            '    "emotion": "enthusiastic yet natural",\n'
+            '    "pronunciation": "clear, standard pronunciation",\n'
+            '    "personality_affect": "warm, approachable, genuine"\n'
             "  }\n"
-            "}\n\n"
-            "Generate the JSON response without additional comments or explanations."
+            "}"
         )
 
         # Force JSON response
@@ -177,7 +188,7 @@ class OpenAIService:
         choice = completion.choices[0]
         response_data = choice.message.content
 
-        # Handle the possibility of dict vs. string vs. to_dict
+        # Handle response as dict or string
         if isinstance(response_data, dict):
             result_data = response_data
         elif isinstance(response_data, str):
