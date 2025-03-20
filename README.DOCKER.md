@@ -23,23 +23,23 @@ docker run -it rapidclip-generator bash
 Inside the container, navigate to the `/app` directory (already set in the Dockerfile). Use the following commands to generate videos
 ### Example with ElevenLabs TTS
 
-```bash
-python src/main.py --theme "Space Curiosities (a single curiosity)" \
-  --language "en" \
-  --voice_id "CstacWqMhJQlnfLPxRG4" \
-  --max_duration 60 \
-  --tts_service elevenlabs
-```
-
-### Example with OpenAI TTS
+### Example with OpenAI TTS (Recommended!) new models
 
 ```bash
 python src/main.py --theme "Technology Curiosities (a single curiosity)" \
   --language "en" \
   --max_duration 60 \
   --tts_service openai \
-  --openai_tts_model "tts-1-hd" \
-  --openai_tts_voice "onyx"
+  --openai_tts_model "gpt-4o-mini-tts" \
+  --openai_tts_voice "ash"
+```
+
+```bash
+python src/main.py --theme "Space Curiosities (a single curiosity)" \
+  --language "en" \
+  --voice_id "CstacWqMhJQlnfLPxRG4" \
+  --max_duration 60 \
+  --tts_service elevenlabs
 ```
 
 ## Parameters

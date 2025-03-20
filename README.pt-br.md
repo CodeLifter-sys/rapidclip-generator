@@ -1,12 +1,13 @@
 # **RapidClip**
 
-**RapidClip** é um projeto que automatiza a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. A versão atual permite gerar vídeos completos a partir de um tema fornecido, combinando narração, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo, integração de músicas de fundo e montagem final do vídeo com transições animadas.
+**RapidClip** é um projeto que automatiza a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. Permite gerar vídeos completos a partir de um tema fornecido, combinando narração, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo, integração de músicas de fundo, balanceamento automático do volume da música de fundo em harmnonia com a narração, e montagem final e renderização do vídeo com transições animadas. Ao usar os novos modelos de TTS da OpenAI (Recomendado), a aplicação consegue definir dinamicamente o tom utilizado na narração, entonação, entre outras características da voz.
 
 🇺🇸 Para a versão em inglês deste README, veja [README.md](README.md).
 
 ---
 
 ## **Vídeos de Demonstração gerados pelo RapidClip:**
+_Observação: Os vídeos de demonstração foram convertidos de mp4 para mov._
 
 <table>
   <thead>
@@ -20,7 +21,7 @@
       <td align="center">
         <video controls width="480">
           <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mov" type="video/quicktime">
-          Seu navegador não suporta o elemento de vídeo.
+          Seu navegador não suporta o elemento de vídeo. Faça o download.
         </video>
         <br>
         <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mov" download>Baixar Demonstração 1</a>
@@ -28,7 +29,7 @@
       <td align="center">
         <video controls width="480">
           <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mov" type="video/quicktime">
-          Seu navegador não suporta o elemento de vídeo.
+          Seu navegador não suporta o elemento de vídeo. Faça o download.
         </video>
         <br>
         <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mov" download>Baixar Demonstração 2</a>
@@ -60,12 +61,8 @@
 - **Renderização Completa**: Criação do vídeo final pronto para publicação.
 - **Suporte a Múltiplos Idiomas**: Possibilidade de criação de conteúdo, narração e legendas em diversos idiomas.
 - **Registro de Processo**: Armazenamento de logs detalhados do andamento do processo – incluindo os prompts gerados para cada intervalo de imagem – na pasta de saída de cada vídeo.
+- **Novos modelos de TTS da OpenAI suportados**: Ao usar os novos modelos de TTS da OpenAI, a aplicação consegue definir dinamicamente o tom utilizado na narração, entonação, entre outras características da voz.
 
----
-
-## **Funcionalidades Planejadas**
-
-- **Recursos Avançados de Edição de Vídeo**: Expansão das capacidades de montagem e edição para funcionalidades mais sofisticadas.
 
 ---
 
@@ -100,6 +97,16 @@ pip install -r requirements.txt
 
 **2. Gere o vídeo:**
 
+**Usando OpenAI TTS (Recomendado!):**
+```bash
+python src/main.py --theme "Curiosidades da Tecnologia (uma única curiosidade)" \
+  --language "pt-BR" \
+  --max_duration 60 \
+  --tts_service openai \
+  --openai_tts_model "gpt-4o-mini-tts" \
+  --openai_tts_voice "ash"
+```
+
 **Usando ElevenLabs TTS:**
 ```bash
 python src/main.py --theme "Curiosidades do Espaço (uma única curiosidade)" \
@@ -107,16 +114,6 @@ python src/main.py --theme "Curiosidades do Espaço (uma única curiosidade)" \
   --voice_id "CstacWqMhJQlnfLPxRG4" \
   --max_duration 60 \
   --tts_service elevenlabs
-```
-
-**Usando OpenAI TTS:**
-```bash
-python src/main.py --theme "Curiosidades da Tecnologia (uma única curiosidade)" \
-  --language "pt-BR" \
-  --max_duration 60 \
-  --tts_service openai \
-  --openai_tts_model "tts-1-hd" \
-  --openai_tts_voice "onyx"
 ```
 
 ---
