@@ -1,6 +1,4 @@
-from pydantic import BaseModel, ValidationError
-from pydantic_ai import Agent
-from pydantic_ai.models.openai import OpenAIModel
+from pydantic import BaseModel
 from openai import OpenAI
 import json
 
@@ -23,8 +21,6 @@ class OpenAIService:
         Args:
             api_key (str): OpenAI API key.
         """
-        model = OpenAIModel('gpt-4o', api_key=api_key,)
-        self.agent = Agent(model)
         self.openai_client = OpenAI(api_key=api_key)
 
     def generate_script(self, theme: str, language: str) -> str:
@@ -46,8 +42,16 @@ class OpenAIService:
             f"('hmmm', 'you know'), casual laughter ('haha'), and other conversational elements to make the script "
             f"feel genuinely human and relatable. Do not include any scene directions or notes—only provide the narration text."
         )
-        result = self.agent.run_sync(prompt)
-        return result.data
+
+        # Calls the Chat Completions endpoint
+        completion = self.openai_client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=1.0,
+        )
+
+        choice = completion.choices[0]
+        return choice.message.content
 
     def generate_image_prompt(
         self, full_subtitles: str, previous_prompts: list, group_text: str
@@ -78,8 +82,14 @@ class OpenAIService:
             "Generate your creative and concise image prompt now."
         )
 
-        result = self.agent.run_sync(prompt)
-        return result.data
+        completion = self.openai_client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=1.0,
+        )
+
+        choice = completion.choices[0]
+        return choice.message.content
 
     def generate_music_choice(
         self, script: str, image_prompts: list, songs_json: str
@@ -107,20 +117,17 @@ class OpenAIService:
             '{ "reasoning": "(reason for choosing the music)", "id": (id of the chosen song) }'
         )
 
-        # Força o retorno em JSON via response_format={"type": "json_object"}
+        # Force JSON response
         completion = self.openai_client.chat.completions.create(
             model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
         )
 
-        # Extraímos a primeira escolha
         choice = completion.choices[0]
-
-        # O valor pode já vir como dict ou como string. Tratamos ambos os casos.
         response_data = choice.message.content
 
-        # Se for dict, ótimo. Se for string, tentamos json.loads().
+        # Attempt to parse the response as JSON or dict
         if isinstance(response_data, dict):
             result_data = response_data
         elif isinstance(response_data, str):
@@ -186,11 +193,9 @@ class OpenAIService:
             response_format={"type": "json_object"},
         )
 
-        # Extract the first choice
         choice = completion.choices[0]
         response_data = choice.message.content
 
-        # Handle response as dict or string
         if isinstance(response_data, dict):
             result_data = response_data
         elif isinstance(response_data, str):
