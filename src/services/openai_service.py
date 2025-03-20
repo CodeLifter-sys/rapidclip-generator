@@ -47,7 +47,7 @@ class OpenAIService:
         completion = self.openai_client.chat.completions.create(
             model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
-            temperature=1.0,
+            temperature=0.5,
         )
 
         choice = completion.choices[0]
@@ -85,7 +85,7 @@ class OpenAIService:
         completion = self.openai_client.chat.completions.create(
             model="gpt-4o",
             messages=[{"role": "user", "content": prompt}],
-            temperature=1.0,
+            temperature=0.5,
         )
 
         choice = completion.choices[0]
@@ -188,7 +188,7 @@ class OpenAIService:
         # Force JSON response
         completion = self.openai_client.chat.completions.create(
             model="gpt-4o",
-            temperature=1.0,
+            temperature=0.5,
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
         )
