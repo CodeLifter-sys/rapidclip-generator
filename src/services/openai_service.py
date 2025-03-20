@@ -23,7 +23,7 @@ class OpenAIService:
         Args:
             api_key (str): OpenAI API key.
         """
-        model = OpenAIModel('gpt-4o', api_key=api_key)
+        model = OpenAIModel('gpt-4o', api_key=api_key,)
         self.agent = Agent(model)
         self.openai_client = OpenAI(api_key=api_key)
 
@@ -65,18 +65,19 @@ class OpenAIService:
         """
         prompt = (
             "You are a creative prompt generator for text-to-image models. "
-            "Your task is to generate a concise and descriptive prompt in English for generating an artistic image that visually represents a given context. "
-            "Ensure that your generated prompt is diverse and significantly different from any previously generated prompts. "
-            "Use creative and varied language to depict the scene uniquely.\n\n"
-            f"1. The entire subtitle context:\n{full_subtitles}\n\n"
+            "Generate a concise, descriptive, and artistic image prompt in English, based on the provided subtitle context. "
+            "Your prompt should visually represent the scene described without mentioning or instructing to include any text or lettering. "
+            "Do NOT attempt to include or describe textual elements in the generated image.\n\n"
+            f"1. Subtitle context:\n{full_subtitles}\n\n"
         )
         if previous_prompts:
-            prompt += f"2. Previously generated prompts:\n{previous_prompts}\n\n"
+            prompt += f"2. Previously generated prompts (avoid repeating these ideas):\n{previous_prompts}\n\n"
 
         prompt += (
-            f"3. Subtitle segment to illustrate:\n{group_text}\n\n"
-            "Based on this information, generate a creative and concise prompt in English."
+            f"3. Subtitle segment to illustrate visually (without text):\n{group_text}\n\n"
+            "Generate your creative and concise image prompt now."
         )
+
         result = self.agent.run_sync(prompt)
         return result.data
 
@@ -180,6 +181,7 @@ class OpenAIService:
         # Force JSON response
         completion = self.openai_client.chat.completions.create(
             model="gpt-4o",
+            temperature=1.0,
             messages=[{"role": "user", "content": prompt}],
             response_format={"type": "json_object"},
         )

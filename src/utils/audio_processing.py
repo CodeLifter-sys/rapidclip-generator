@@ -1,5 +1,6 @@
 from pydub import AudioSegment
 from io import BytesIO
+import os
 
 
 def reprocess_audio(audio_data: bytes,
@@ -52,3 +53,34 @@ def reprocess_audio(audio_data: bytes,
     output_data.seek(0)
 
     return output_data.read()
+
+
+def adjust_background_music_volume(narration_path: str, bg_music_path: str, target_diff: float = -10.0, output_dir: str = None) -> str:
+    """
+    Adjusts the volume of the background music so that it is target_diff dB quieter than the narration.
+
+    Args:
+        narration_path (str): Path to the narration audio file (MP3).
+        bg_music_path (str): Path to the background music file (MP3).
+        target_diff (float): Desired difference in dBFS (default: -10.0 dB, meaning background is 10 dB quieter than narration).
+        output_dir (str, optional): Directory to save the adjusted background music file. If not provided, uses the directory of bg_music_path.
+
+    Returns:
+        str: Path to the adjusted background music audio file (temporary).
+    """
+    narration_audio = AudioSegment.from_file(narration_path, format="mp3")
+    bg_music = AudioSegment.from_file(bg_music_path, format="mp3")
+
+    narration_dbfs = narration_audio.dBFS
+    bg_music_dbfs = bg_music.dBFS
+    current_diff = bg_music_dbfs - narration_dbfs
+    gain_adjustment = target_diff - current_diff
+    adjusted_bg_music = bg_music.apply_gain(gain_adjustment)
+
+    # Use output_dir if provided; otherwise, use the directory of bg_music_path
+    if output_dir is None:
+        output_dir = os.path.dirname(bg_music_path)
+
+    temp_path = os.path.join(output_dir, "adjusted_bg_music.mp3")
+    adjusted_bg_music.export(temp_path, format="mp3")
+    return temp_path

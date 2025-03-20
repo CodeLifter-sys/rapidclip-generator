@@ -7,10 +7,9 @@ from moviepy import (
     concatenate_audioclips
 )
 from moviepy.video.fx import FadeIn, FadeOut, Resize
-from moviepy.audio.fx import MultiplyVolume
 from moviepy.video.tools.subtitles import SubtitlesClip
-import numpy as np
 import os
+from utils.audio_processing import adjust_background_music_volume
 
 
 def make_textclip(txt):
@@ -56,7 +55,13 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None):
 
     # Process background music if provided
     if background_music_path:
-        bg_music = AudioFileClip(background_music_path)
+        # Adjust the background music volume relative to the narration,
+        # saving the adjusted file in the output folder.
+        adjusted_bg_music_path = adjust_background_music_volume(
+            audio_path, background_music_path, target_diff=-15.0, output_dir=video_folder)
+
+        # Load the adjusted background music using MoviePy
+        bg_music = AudioFileClip(adjusted_bg_music_path)
 
         # Loop background music if its duration is shorter than the narration
         if bg_music.duration < video_duration:
@@ -67,10 +72,7 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None):
         if bg_music.duration > video_duration:
             bg_music = bg_music.with_duration(video_duration)
 
-        # Reduce background music volume
-        bg_music = bg_music.with_effects([MultiplyVolume(0.2)])
-
-        # Combine narration with background music
+        # Combine narration with the adjusted background music
         combined_audio = CompositeAudioClip([narration_audio, bg_music])
     else:
         combined_audio = narration_audio
