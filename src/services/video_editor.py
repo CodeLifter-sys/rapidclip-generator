@@ -1,25 +1,22 @@
-from moviepy import AudioFileClip, ImageClip, CompositeVideoClip, TextClip, ColorClip
+from moviepy import (
+    AudioFileClip,
+    ImageClip,
+    CompositeVideoClip,
+    TextClip,
+    CompositeAudioClip,
+    concatenate_audioclips
+)
+from moviepy.video.fx import FadeIn, FadeOut, Resize
+from moviepy.audio.fx import MultiplyVolume
 from moviepy.video.tools.subtitles import SubtitlesClip
-from moviepy.video.fx.FadeIn import FadeIn
-from moviepy.video.fx.FadeOut import FadeOut
-from moviepy.video.fx.Resize import Resize
+import numpy as np
 import os
 
 
 def make_textclip(txt):
-    """
-    Generate a TextClip for a subtitle line.
-
-    Args:
-        txt (str): The subtitle text.
-
-    Returns:
-        TextClip: A TextClip object with the subtitle rendered.
-    """
+    """Gera um TextClip para uma legenda"""
     return TextClip(
         text=txt,
-        # Caminho para a fonte que você adicionará na pasta 'fonts' do projeto.
-        # Certifique-se de que o arquivo "Helvetica.ttf" (ou outra fonte de sua preferência) esteja na pasta "fonts".
         font="fonts/Helvetica.ttf",
         font_size=50,
         color="yellow",
@@ -30,62 +27,72 @@ def make_textclip(txt):
     )
 
 
-def assemble_video(video_folder, file_id, cues):
-    """
-    Assemble the final video using generated audio, images, and subtitles with animated transitions.
-    The video resolution will be 1080x1920.
-
-    Args:
-        video_folder (str): The folder where video assets are saved.
-        file_id (str): Unique identifier for the video.
-        cues (list): A list of subtitle cues as tuples (start, end, text).
-
-    Returns:
-        str: The path to the final video file.
-    """
-    # Load the audio clip
+def assemble_video(video_folder, file_id, cues, background_music_path=None):
+    # Carrega áudio de narração
     audio_path = os.path.join(video_folder, f"{file_id}.mp3")
-    audio_clip = AudioFileClip(audio_path)
-    video_duration = audio_clip.duration
+    narration_audio = AudioFileClip(audio_path)
+    video_duration = narration_audio.duration
 
-    # Use the first image as the background for the entire video
-    first_image_path = os.path.join(video_folder, f"{file_id}_img_1.png")
-    background = ImageClip(first_image_path).with_duration(video_duration)
-    # Apply a slow zoom in effect on the background image using Resize directly
+    # Processa música de fundo
+    if background_music_path:
+        bg_music = AudioFileClip(background_music_path)
+
+        # Loop se necessário
+        if bg_music.duration < video_duration:
+            loops = int(video_duration // bg_music.duration) + 1
+            bg_music = concatenate_audioclips([bg_music] * loops)
+
+        # Trunca para duração do vídeo
+        if bg_music.duration > video_duration:
+            bg_music = bg_music.with_duration(video_duration)
+
+        # Reduz volume
+        bg_music = bg_music.with_effects([MultiplyVolume(0.2)])
+
+        # Combina com narração
+        combined_audio = CompositeAudioClip([narration_audio, bg_music])
+    else:
+        combined_audio = narration_audio
+
+    # Monta vídeo base com zoom
+    first_image = os.path.join(video_folder, f"{file_id}_img_1.png")
+    background = ImageClip(first_image).with_duration(video_duration)
     background = background.with_effects([Resize(lambda t: 1 + 0.02 * t)])
 
-    # Create image clips for subsequent images (if any)
+    # Adiciona outras imagens
     image_clips = []
     num_images = (len(cues) + 1) // 2
-    # Skip the first image, which is used as background.
     for i in range(1, num_images):
-        group_cues = cues[i * 2: i * 2 + 2]
-        start_time = group_cues[0][0]
-        end_time = group_cues[-1][1]
-        duration = end_time - start_time
-        image_path = os.path.join(video_folder, f"{file_id}_img_{i + 1}.png")
-        clip = ImageClip(image_path).with_duration(duration)
-        clip = clip.with_start(start_time)
-        clip = clip.with_effects([FadeIn(0.5), FadeOut(0.5)])
-        # Apply a slow zoom in effect on the clip using Resize directly
-        clip = clip.with_effects([Resize(lambda t: 1 + 0.02 * t)])
+        group = cues[i*2:i*2+2]
+        start = group[0][0]
+        end = group[-1][1]
+        duration = end - start
+
+        img_path = os.path.join(video_folder, f"{file_id}_img_{i+1}.png")
+        clip = ImageClip(img_path).with_duration(duration)
+        clip = clip.with_start(start)
+        clip = clip.with_effects([
+            FadeIn(0.5),
+            FadeOut(0.5),
+            Resize(lambda t: 1 + 0.02 * t)
+        ])
         image_clips.append(clip)
 
-    # Composite the video: overlay image clips on the background
+    # Composição final
     video = CompositeVideoClip([background] + image_clips, size=(1080, 1920))
 
-    # Generate subtitles using SubtitlesClip with the make_textclip function.
+    # Adiciona legendas
     srt_path = os.path.join(video_folder, f"{file_id}.srt")
     subtitles = SubtitlesClip(
         subtitles=srt_path, make_textclip=make_textclip).with_position(("center", 1620))
 
-    # Composite video with subtitles
-    final_video = CompositeVideoClip([video, subtitles], size=(1080, 1920))
-    final_video = final_video.with_audio(audio_clip)
-    final_video = final_video.with_duration(video_duration)
+    # Junta tudo
+    final = CompositeVideoClip([video, subtitles], size=(1080, 1920))
+    final = final.with_audio(combined_audio)
+    final = final.with_duration(video_duration)
 
-    # Write the final video to file with resolution 1080x1920
+    # Exporta
     output_path = os.path.join(video_folder, f"{file_id}_final.mp4")
-    final_video.write_videofile(output_path, fps=24)
+    final.write_videofile(output_path, fps=24)
 
     return output_path

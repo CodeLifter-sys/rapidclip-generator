@@ -164,12 +164,45 @@ def main():
         logger.error(f"Error generating images: {e}")
         sys.exit(1)
 
+    # Select background music based on script, image prompts, and available songs
+    logger.info("Selecting background music using OpenAI...")
+    try:
+        import json
+        # Load songs data from songs/songs.json
+        with open("songs/songs.json", "r", encoding="utf-8") as f:
+            songs_data = json.load(f)
+        # Convert songs_data to formatted JSON string
+        songs_json = json.dumps(songs_data, ensure_ascii=False, indent=2)
+        # Generate music choice using the language model
+        music_choice_response = openai_service.generate_music_choice(
+            script=script_text,
+            image_prompts=previous_image_prompts,
+            songs_json=songs_json
+        )
+        # Parse the response JSON
+        # music_choice = json.loads(music_choice_response)
+        music_choice = music_choice_response.dict()
+        logger.info(f"Background music selected: {music_choice}")
+        # Find the chosen song in songs_data
+        chosen_song = next(
+            (song for song in songs_data if song["id"] == music_choice["id"]), None)
+        if not chosen_song:
+            logger.error("Invalid song ID returned by music selection.")
+            sys.exit(1)
+        # Construct the path to the music file in songs/mp3 folder
+        background_music_path = os.path.join(
+            "songs", "mp3", chosen_song["file"])
+    except Exception as e:
+        logger.error(f"Error selecting background music: {e}")
+        sys.exit(1)
+
     # Assemble the final video using audio, images, subtitles, and transitions
     logger.info(
         "Assembling final video with audio, images, subtitles, and transitions...")
     try:
         from services.video_editor import assemble_video
-        final_video_path = assemble_video(video_folder, file_id, cues)
+        final_video_path = assemble_video(
+            video_folder, file_id, cues, background_music_path)
         logger.info(f"Final video assembled and saved as {final_video_path}.")
     except Exception as e:
         logger.error(f"Error assembling final video: {e}")
