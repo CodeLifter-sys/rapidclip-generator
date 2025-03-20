@@ -134,3 +134,64 @@ class OpenAIService:
             )
 
         return MusicChoiceResponse(**result_data)
+
+    def generate_script_and_voice_instructions(self, theme: str, language: str) -> dict:
+        """
+        Generates a JSON object containing the script and voice instructions.
+
+        Args:
+            theme (str): The theme for the script.
+            language (str): The language for the script.
+
+        Returns:
+            dict: Object with the keys "script" and "voice_instructions".
+        """
+        prompt = (
+            f"You are a creative scriptwriter and a specialist in short video narration. "
+            f"For the theme '{theme}', generate a JSON object containing the keys 'script' and 'voice_instructions'. "
+            f"The 'script' should contain the narration text. The 'voice_instructions' should be an object with the following keys: "
+            f"'accent_affect', 'tone', 'pacing', 'emotion', 'pronunciation', and 'personality_affect'.\n\n"
+            "Example response:\n"
+            "{\n"
+            '  "script": "Your narration text here",\n'
+            '  "voice_instructions": {\n'
+            '    "accent_affect": "detailed description",\n'
+            '    "tone": "detailed description",\n'
+            '    "pacing": "detailed description",\n'
+            '    "emotion": "detailed description",\n'
+            '    "pronunciation": "detailed description",\n'
+            '    "personality_affect": "detailed description"\n'
+            "  }\n"
+            "}\n\n"
+            "Generate the JSON response without additional comments or explanations."
+        )
+
+        # Force JSON response
+        completion = self.openai_client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"},
+        )
+
+        # Extract the first choice
+        choice = completion.choices[0]
+        response_data = choice.message.content
+
+        # Handle the possibility of dict vs. string vs. to_dict
+        if isinstance(response_data, dict):
+            result_data = response_data
+        elif isinstance(response_data, str):
+            try:
+                result_data = json.loads(response_data)
+            except json.JSONDecodeError as e:
+                raise ValueError(
+                    f"Could not decode JSON from the model response:\n{response_data}\n\nError: {e}"
+                )
+        elif hasattr(response_data, "to_dict"):
+            result_data = response_data.to_dict()
+        else:
+            raise ValueError(
+                f"Unexpected response type for message content: {type(response_data)}"
+            )
+
+        return result_data

@@ -35,26 +35,45 @@ def main():
     elevenlabs_service = ElevenLabsService(api_key=settings.ELEVENLABS_API_KEY)
     whisper_service = WhisperService(api_key=settings.OPENAI_API_KEY)
 
-    # Generate the script
-    logger.info("Generating script with OpenAI...")
-    try:
-        script_text = openai_service.generate_script(
-            theme=args.theme, language=args.language
-        )
-        logger.debug(f"Generated script: {script_text}")
-    except Exception as e:
-        logger.error(f"Error generating script: {e}")
-        sys.exit(1)
-
-    # Choose TTS service
+    # Generate script (and voice instructions if using OpenAI TTS)
     if args.tts_service == "elevenlabs":
-        logger.info("Converting text to speech with Eleven Labs...")
+        logger.info("Generating script with OpenAI...")
+        try:
+            script_text = openai_service.generate_script(
+                theme=args.theme, language=args.language
+            )
+            logger.debug(f"Generated script: {script_text}")
+        except Exception as e:
+            logger.error(f"Error generating script: {e}")
+            sys.exit(1)
     else:
-        logger.info("Converting text to speech with OpenAI TTS...")
+        logger.info(
+            "Generating script and voice instructions with OpenAI TTS...")
+        try:
+            result = openai_service.generate_script_and_voice_instructions(
+                theme=args.theme, language=args.language
+            )
+            script_text = result.get("script")
+            voice_instructions_obj = result.get("voice_instructions")
+            instructions_str = (
+                f"Accent/Affect: {voice_instructions_obj.get('accent_affect')}; "
+                f"Tone: {voice_instructions_obj.get('tone')}; "
+                f"Pacing: {voice_instructions_obj.get('pacing')}; "
+                f"Emotion: {voice_instructions_obj.get('emotion')}; "
+                f"Pronunciation: {voice_instructions_obj.get('pronunciation')}; "
+                f"Personality Affect: {voice_instructions_obj.get('personality_affect')}"
+            )
+            logger.debug(f"Generated script: {script_text}")
+            logger.debug(f"Generated voice instructions: {instructions_str}")
+        except Exception as e:
+            logger.error(
+                f"Error generating script and voice instructions: {e}")
+            sys.exit(1)
 
-    # Convert script to audio
+    # Choose TTS service and convert script to audio
     try:
         if args.tts_service == "elevenlabs":
+            logger.info("Converting text to speech with Eleven Labs...")
             response = elevenlabs_service.text_to_speech(
                 voice_id=args.voice_id,
                 text=script_text,
@@ -62,11 +81,13 @@ def main():
                 similarity_boost=args.similarity_boost
             )
         else:
+            logger.info("Converting text to speech with OpenAI TTS...")
             tts_service = OpenAITTSService(api_key=settings.OPENAI_API_KEY)
             response = tts_service.text_to_speech(
                 text=script_text,
                 model=args.openai_tts_model,
-                voice=args.openai_tts_voice
+                voice=args.openai_tts_voice,
+                instructions=instructions_str
             )
 
         # Generate a unique file_id for this video and create a dedicated output folder
@@ -180,7 +201,6 @@ def main():
             songs_json=songs_json
         )
         # Parse the response JSON
-        # music_choice = json.loads(music_choice_response)
         music_choice = music_choice_response.dict()
         logger.info(f"Background music selected: {music_choice}")
         # Find the chosen song in songs_data
