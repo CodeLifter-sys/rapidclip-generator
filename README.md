@@ -19,19 +19,19 @@
     <tr>
       <td align="center">
         <video controls width="480">
-          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/space.mp4" type="video/mp4">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/space.mov" type="video/quicktime">
           Your browser does not support the video element.
         </video>
         <br>
-        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/space.mp4" download>Download Demo 1</a>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/space.mov" download>Download Demo 1</a>
       </td>
       <td align="center">
         <video controls width="480">
-          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/technology.mp4" type="video/mp4">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/technology.mov" type="video/quicktime">
           Your browser does not support the video element.
         </video>
         <br>
-        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/technology.mp4" download>Download Demo 2</a>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/technology.mov" download>Download Demo 2</a>
       </td>
     </tr>
   </tbody>
