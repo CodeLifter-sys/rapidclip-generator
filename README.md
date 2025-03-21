@@ -2,7 +2,7 @@
 
 **RapidClip** is a project that automates the creation of short videos, ideal for platforms like YouTube Shorts, Instagram Reels, TikTok, and Kwai. It allows generating complete videos from a given theme, combining narration, dynamic images, visual effects, synchronized subtitles, detailed process logging, background music integration, automatic volume balancing of background music in harmony with narration, and final video assembly and rendering with animated transitions. By using OpenAI's new TTS models (Recommended), the application can dynamically define the tone used in narration, intonation, and other voice characteristics.
 
-🇺🇸 For the English version of this README, see [README.md](README.md).
+🇧🇷 For the Portuguese (pt-br) version of this README, see [README.md](README.pt-br.md).
 
 ---
 
