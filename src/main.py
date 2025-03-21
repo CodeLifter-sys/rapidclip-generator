@@ -145,6 +145,12 @@ def main():
     try:
         transcript = whisper_service.transcribe_audio(
             audio_file_path=output_file)
+
+        logger.info("Timing data of all words returned by Whisper:")
+        for word in transcript.words:
+            logger.info("Word: '%s', start: %s, end: %s",
+                        word.word, word.start, word.end)
+
         aligned_words = align_words_with_punctuation(
             transcript.words, transcript.text)
         srt_content, cues = format_srt_from_aligned_words(aligned_words)

@@ -34,7 +34,7 @@ def make_textclip(txt):
     )
 
 
-def assemble_video(video_folder, file_id, cues, background_music_path=None):
+def assemble_video(video_folder, file_id, cues, background_music_path=None, max_duration=None):
     """
     Assembles a final video by combining narration audio, images, subtitles, and background music.
 
@@ -43,6 +43,7 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None):
         file_id (str): The unique identifier for the video.
         cues (list): Subtitle cues defining the timing of text overlays.
         background_music_path (str, optional): Path to the background music file. Defaults to None.
+        max_duration (float, optional): The maximum allowed duration for the video.
 
     Returns:
         str: The path to the final video file.
@@ -55,24 +56,15 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None):
 
     # Process background music if provided
     if background_music_path:
-        # Adjust the background music volume relative to the narration,
-        # saving the adjusted file in the output folder.
         adjusted_bg_music_path = adjust_background_music_volume(
             audio_path, background_music_path, target_diff=-15.0, output_dir=video_folder)
 
-        # Load the adjusted background music using MoviePy
         bg_music = AudioFileClip(adjusted_bg_music_path)
-
-        # Loop background music if its duration is shorter than the narration
         if bg_music.duration < video_duration:
             loops = int(video_duration // bg_music.duration) + 1
             bg_music = concatenate_audioclips([bg_music] * loops)
-
-        # Trim background music to match the narration duration
         if bg_music.duration > video_duration:
             bg_music = bg_music.with_duration(video_duration)
-
-        # Combine narration with the adjusted background music
         combined_audio = CompositeAudioClip([narration_audio, bg_music])
     else:
         combined_audio = narration_audio
@@ -84,7 +76,6 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None):
 
     # Add additional images with transitions
     image_clips = []
-    # Number of images based on subtitle groups
     num_images = (len(cues) + 1) // 2
     for i in range(1, num_images):
         group = cues[i*2:i*2+2]
@@ -102,7 +93,7 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None):
         ])
         image_clips.append(clip)
 
-    # Create the final video composition with images and transitions
+    # Create the video composition with images and transitions
     video = CompositeVideoClip([background] + image_clips, size=(1080, 1920))
 
     # Add subtitles
@@ -113,7 +104,21 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None):
     # Merge all elements together
     final = CompositeVideoClip([video, subtitles], size=(1080, 1920))
     final = final.with_audio(combined_audio)
-    final = final.with_duration(video_duration)
+
+    # Determine the final duration:
+    # Get the end time of the last subtitle cue.
+    if cues:
+        last_subtitle_end = cues[-1][1]
+    else:
+        last_subtitle_end = video_duration
+
+    # The desired duration is the maximum between the audio duration and the last subtitle's end,
+    # but not exceeding max_duration (if provided).
+    desired_duration = max(video_duration, last_subtitle_end)
+    if max_duration is not None:
+        desired_duration = min(desired_duration, max_duration)
+
+    final = final.with_duration(desired_duration)
 
     # Export the final video
     output_path = os.path.join(video_folder, f"{file_id}_final.mp4")

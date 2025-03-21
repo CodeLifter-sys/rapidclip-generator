@@ -65,6 +65,17 @@ def align_words_with_punctuation(words, full_text):
 
         aligned_words.append((w_obj.start, w_obj.end, base_word))
 
+    # Append any remaining tokens using spaces and then remove extra spaces before punctuation.
+    if pt_idx < len(punct_tokens) and aligned_words:
+        remaining = " ".join(punct_tokens[pt_idx:])
+        remaining = re.sub(r'\s+([^\w\s])', r'\1', remaining)
+        start, end, word_with_punc = aligned_words[-1]
+        # Insert a space if needed
+        if word_with_punc and remaining and word_with_punc[-1].isalnum() and remaining[0].isalnum():
+            aligned_words[-1] = (start, end, word_with_punc + " " + remaining)
+        else:
+            aligned_words[-1] = (start, end, word_with_punc + remaining)
+
     return aligned_words
 
 
@@ -108,6 +119,14 @@ def format_srt_from_aligned_words(aligned_words, max_words_per_cue=10, max_chars
             current_words.append(w_data)
 
     flush_cue()
+
+    # Adjust the duration of the last one if it is too short
+    if cues:
+        last_start, last_end, last_text = cues[-1]
+        min_duration = 2.0  # minimum duration in seconds for the last caption
+        if (last_end - last_start) < min_duration:
+            last_end = last_start + min_duration
+            cues[-1] = (last_start, last_end, last_text)
 
     srt_content = ""
     for i, (start, end, text) in enumerate(cues, start=1):
