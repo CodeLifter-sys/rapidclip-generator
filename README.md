@@ -20,19 +20,19 @@ _Note: The demonstration videos were converted from mp4 to mov._
     <tr>
       <td align="center">
         <video controls width="480">
-          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/space.mov" type="video/quicktime">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/animal_life.mov" type="video/quicktime">
           Your browser does not support the video element. Download it.
         </video>
         <br>
-        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/space.mov" download>Download Demo 1</a>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/animal_life.mov" download>Download Demo 1</a>
       </td>
       <td align="center">
         <video controls width="480">
-          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/technology.mov" type="video/quicktime">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/history.mov" type="video/quicktime">
           Your browser does not support the video element. Download it.
         </video>
         <br>
-        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/technology.mov" download>Download Demo 2</a>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/en/history.mov" download>Download Demo 2</a>
       </td>
     </tr>
   </tbody>

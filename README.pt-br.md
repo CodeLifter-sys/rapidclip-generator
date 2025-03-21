@@ -20,19 +20,19 @@ _Observação: Os vídeos de demonstração foram convertidos de mp4 para mov._
     <tr>
       <td align="center">
         <video controls width="480">
-          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mov" type="video/quicktime">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/vida_animal.mov" type="video/quicktime">
           Seu navegador não suporta o elemento de vídeo. Faça o download.
         </video>
         <br>
-        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/espaco.mov" download>Baixar Demonstração 1</a>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/vida_animal.mov" download>Baixar Demonstração 1</a>
       </td>
       <td align="center">
         <video controls width="480">
-          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mov" type="video/quicktime">
+          <source src="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/historia.mov" type="video/quicktime">
           Seu navegador não suporta o elemento de vídeo. Faça o download.
         </video>
         <br>
-        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/tecnologia.mov" download>Baixar Demonstração 2</a>
+        <a href="https://raw.githubusercontent.com/itallonardi/rapidclip-generator/main/demos/pt-br/historia.mov" download>Baixar Demonstração 2</a>
       </td>
     </tr>
   </tbody>
