@@ -57,7 +57,9 @@ class OpenAIService:
         self, full_subtitles: str, previous_prompts: list, group_text: str
     ) -> str:
         """
-        Generate a prompt for image generation based on subtitle context.
+        Generate a prompt for image generation based on subtitle context, 
+        ensuring consistency of style across prompts, historical coherence if applicable, 
+        and avoiding repetitive ideas.
 
         Args:
             full_subtitles (str): The entire subtitle text for context.
@@ -67,19 +69,32 @@ class OpenAIService:
         Returns:
             str: The generated image prompt in English.
         """
+
         prompt = (
             "You are a creative prompt generator for text-to-image models. "
-            "Generate a concise, descriptive, and artistic image prompt in English, based on the provided subtitle context. "
-            "Your prompt should visually represent the scene described without mentioning or instructing to include any text or lettering. "
-            "Do NOT attempt to include or describe textual elements in the generated image.\n\n"
+            "Your task is to maintain a consistent, coherent, and artistic style throughout all generated prompts, "
+            "while ensuring each prompt remains fresh and distinctive. "
+            "If the context implies a historical or thematic setting, incorporate accurate period elements to achieve authenticity. "
+            "Avoid mentioning or including any text or lettering within the image itself. "
+            "Do NOT generate or describe textual elements. "
+            "Focus on visually capturing the essence of the scene described.\n\n"
             f"1. Subtitle context:\n{full_subtitles}\n\n"
         )
+
         if previous_prompts:
-            prompt += f"2. Previously generated prompts (avoid repeating these ideas):\n{previous_prompts}\n\n"
+            prompt += (
+                "2. Previously generated prompts (do not repeat these ideas; "
+                "maintain overall style coherence while introducing new creative angles):\n"
+                f"{previous_prompts}\n\n"
+            )
 
         prompt += (
-            f"3. Subtitle segment to illustrate visually (without text):\n{group_text}\n\n"
-            "Generate your creative and concise image prompt now."
+            f"3. Subtitle segment to visualize (without text):\n{group_text}\n\n"
+            "Generate a single, concise, and artistically styled prompt in English, "
+            "consistent with the established style but offering a novel perspective. "
+            "Incorporate relevant historical or contextual details if applicable. "
+            "Do not reference or encourage the inclusion of text or lettering. "
+            "Present only one concise, final image prompt now."
         )
 
         completion = self.openai_client.chat.completions.create(
