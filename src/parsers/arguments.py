@@ -23,6 +23,8 @@ def parse_args():
                         help="OpenAI TTS model name (default: tts-1-hd).")
     parser.add_argument("--openai_tts_voice", default="alloy",
                         help="OpenAI TTS voice name (default: alloy).")
+    parser.add_argument("--watermark", type=str, default=None,
+                        help="Optional watermark text to overlay on the video.")
 
     args = parser.parse_args()
 

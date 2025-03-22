@@ -185,7 +185,12 @@ def main():
             image_data = replicate_service.generate_image(
                 image_prompt, width=1080, height=1920)
             image_file = save_image(
-                image_data, directory=video_folder, file_id=file_id, suffix=f"img_{(i // 2) + 1}")
+                image_data,
+                directory=video_folder,
+                file_id=file_id,
+                suffix=f"img_{(i // 2) + 1}",
+                watermark=args.watermark
+            )
             logger.info(f"Image generated and saved as {image_file}.")
     except Exception as e:
         logger.error(f"Error generating images: {e}")
