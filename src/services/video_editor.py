@@ -115,14 +115,14 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None, max_
             TextClip(
                 text=watermark,
                 font="fonts/Helvetica.ttf",
-                font_size=24,
+                font_size=48,
                 color="white",
                 stroke_color="black",
                 stroke_width=1,
                 method="label"
             )
             .with_duration(final.duration)
-            .with_position(("right", "bottom"))
+            .with_position(("center", "center"))
             .with_opacity(0.5)
         )
         final = CompositeVideoClip([final, watermark_clip], size=(1080, 1920))
