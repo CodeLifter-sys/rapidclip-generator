@@ -56,6 +56,7 @@ _Note: The demonstration videos were converted from mp4 to mov._
 - **Background Music Integration**:
   - Selects a soundtrack from a local library of royalty-free music (configured in `songs/songs.json` and stored in `songs/mp3`).
   - Automatic music selection by an AI model based on the script and generated images.
+- **Optional Video Watermark**: Adds an optional video-level text watermark using the `--watermark` argument.
 - **Relevant Images**: Improves image selection to better illustrate content.
 - **Visual Effects and Transitions**: Applies zoom, animations, and additional smooth cuts.
 - **Complete Rendering**: Creates the final video ready for publishing.
@@ -103,7 +104,8 @@ python src/main.py --theme "Technology Curiosities (a single curiosity)" \
   --max_duration 60 \
   --tts_service openai \
   --openai_tts_model "gpt-4o-mini-tts" \
-  --openai_tts_voice "ash"
+  --openai_tts_voice "ash" \
+  --watermark "Your channel name or custom text"
 ```
 
 **Using ElevenLabs TTS:**
@@ -112,7 +114,8 @@ python src/main.py --theme "Space Curiosities (a single curiosity)" \
   --language "en-US" \
   --voice_id "CstacWqMhJQlnfLPxRG4" \
   --max_duration 60 \
-  --tts_service elevenlabs
+  --tts_service elevenlabs \
+  --watermark "Your channel name or custom text"
 ```
 
 ---

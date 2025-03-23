@@ -1,6 +1,6 @@
 # **RapidClip**
 
-**RapidClip** é um projeto que automatiza a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. Permite gerar vídeos completos a partir de um tema fornecido, combinando narração, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo, integração de músicas de fundo, balanceamento automático do volume da música de fundo em harmnonia com a narração, e montagem final e renderização do vídeo com transições animadas. Ao usar os novos modelos de TTS da OpenAI (Recomendado), a aplicação consegue definir dinamicamente o tom utilizado na narração, entonação, entre outras características da voz.
+**RapidClip** é um projeto que automatiza a criação de vídeos curtos, ideais para plataformas como YouTube Shorts, Instagram Reels, TikTok e Kwai. Permite gerar vídeos completos a partir de um tema fornecido, combinando narração, imagens dinâmicas, efeitos visuais, legendas sincronizadas, registro detalhado do processo, integração de músicas de fundo, balanceamento automático do volume da música de fundo em harmonia com a narração, e montagem final e renderização do vídeo com transições animadas. Ao usar os novos modelos de TTS da OpenAI (Recomendado), a aplicação consegue definir dinamicamente o tom utilizado na narração, entonação, entre outras características da voz.
 
 🇺🇸 Para a versão em inglês deste README, veja [README.md](README.md).
 
@@ -56,13 +56,13 @@ _Observação: Os vídeos de demonstração foram convertidos de mp4 para mov._
 - **Integração de Músicas de Fundo**:
   - Seleção de trilha sonora a partir de uma biblioteca local de músicas de uso livre (configurada em `songs/songs.json` e armazenada em `songs/mp3`).
   - Escolha automática da música por um modelo de IA, com base no roteiro e nas imagens geradas.
+- **Marca d'Água no Vídeo**: Marca d'água opcional em nível de vídeo, com texto personalizado através do argumento `--watermark`.
 - **Imagens Relevantes**: Melhoria na seleção de imagens para ilustrar melhor o conteúdo.
 - **Efeitos Visuais e Transições**: Aplicação de zoom, animações e cortes suaves adicionais.
 - **Renderização Completa**: Criação do vídeo final pronto para publicação.
 - **Suporte a Múltiplos Idiomas**: Possibilidade de criação de conteúdo, narração e legendas em diversos idiomas.
 - **Registro de Processo**: Armazenamento de logs detalhados do andamento do processo – incluindo os prompts gerados para cada intervalo de imagem – na pasta de saída de cada vídeo.
 - **Novos modelos de TTS da OpenAI suportados**: Ao usar os novos modelos de TTS da OpenAI, a aplicação consegue definir dinamicamente o tom utilizado na narração, entonação, entre outras características da voz.
-
 
 ---
 
@@ -104,7 +104,8 @@ python src/main.py --theme "Curiosidades da Tecnologia (uma única curiosidade)"
   --max_duration 60 \
   --tts_service openai \
   --openai_tts_model "gpt-4o-mini-tts" \
-  --openai_tts_voice "ash"
+  --openai_tts_voice "ash" \
+  --watermark "Nome do seu canal ou texto personalizado"
 ```
 
 **Usando ElevenLabs TTS:**
@@ -113,30 +114,12 @@ python src/main.py --theme "Curiosidades do Espaço (uma única curiosidade)" \
   --language "pt-BR" \
   --voice_id "CstacWqMhJQlnfLPxRG4" \
   --max_duration 60 \
-  --tts_service elevenlabs
+  --tts_service elevenlabs \
+  --watermark "Nome do seu canal ou texto personalizado"
 ```
-
----
-
-## **Próximos Passos**
-
-1. Refinar os recursos avançados de edição de vídeo para funcionalidades mais sofisticadas.
-
----
-
-## **Contribuições**
-
-Estamos abertos a contribuições! Caso deseje colaborar com o projeto, siga estas etapas:
-
-1. Faça um fork do repositório.
-2. Crie uma branch para sua funcionalidade ou correção de bug:
-   ```bash
-   git checkout -b minha-contribuicao
-   ```
-3. Realize suas alterações e envie um pull request detalhando suas modificações.
 
 ---
 
 ## **Licença**
 
-Este projeto está licenciado sob a licença **MIT**. Isso significa que você pode usá-lo, modificá-lo e distribuí-lo, desde que a licença original seja incluída no código. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está licenciado sob a licença **MIT**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.

@@ -20,8 +20,7 @@ docker run -it rapidclip-generator bash
 ```
 
 ## Running the Project
-Inside the container, navigate to the `/app` directory (already set in the Dockerfile). Use the following commands to generate videos
-### Example with ElevenLabs TTS
+Inside the container, navigate to the `/app` directory (already set in the Dockerfile). Use the following commands to generate videos.
 
 ### Example with OpenAI TTS (Recommended!) new models
 
@@ -31,27 +30,32 @@ python src/main.py --theme "Technology Curiosities (a single curiosity)" \
   --max_duration 60 \
   --tts_service openai \
   --openai_tts_model "gpt-4o-mini-tts" \
-  --openai_tts_voice "ash"
+  --openai_tts_voice "ash" \
+  --watermark "Your channel name or custom text"
 ```
+
+### Example with ElevenLabs TTS
 
 ```bash
 python src/main.py --theme "Space Curiosities (a single curiosity)" \
   --language "en" \
   --voice_id "CstacWqMhJQlnfLPxRG4" \
   --max_duration 60 \
-  --tts_service elevenlabs
+  --tts_service elevenlabs \
+  --watermark "Your channel name or custom text"
 ```
 
 ## Parameters
 | Parameter             | Description                                             | Required |
-|----------------------|-----------------------------------------------------|----------|
-| `--theme`           | The theme of the script to be created.               | Yes      |
-| `--language`        | The language for the script and narration.           | Yes      |
-| `--tts_service`     | The TTS service to use (`elevenlabs` or `openai`). Defaults to `elevenlabs`. | No       |
-| `--voice_id`        | The voice ID to be used for narration (for ElevenLabs). | Required for ElevenLabs |
-| `--openai_tts_model`| The OpenAI TTS model to be used (default: `tts-1-hd`). | No       |
-| `--openai_tts_voice`| The OpenAI TTS voice to be used (default: `alloy`).   | No       |
-| `--max_duration`    | The maximum allowed duration for the audio (in seconds). | Yes      |
+|----------------------|---------------------------------------------------------|----------|
+| `--theme`            | The theme of the script to be created.                 | Yes      |
+| `--language`         | The language for the script and narration.             | Yes      |
+| `--tts_service`      | The TTS service to use (`elevenlabs` or `openai`). Defaults to `elevenlabs`. | No       |
+| `--voice_id`         | The voice ID to be used for narration (for ElevenLabs). | Required for ElevenLabs |
+| `--openai_tts_model` | The OpenAI TTS model to be used (default: `gpt-4o-mini-tts`). | No       |
+| `--openai_tts_voice` | The OpenAI TTS voice to be used (default: `ash`).    | No       |
+| `--max_duration`     | The maximum allowed duration for the audio (in seconds). | Yes      |
+| `--watermark`        | Optional watermark text to overlay on the final video. | No       |
 
 ## Output Files
 The generated files will be saved in the `output/` folder and include:
