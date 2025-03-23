@@ -34,9 +34,10 @@ def make_textclip(txt):
     )
 
 
-def assemble_video(video_folder, file_id, cues, background_music_path=None, max_duration=None):
+def assemble_video(video_folder, file_id, cues, background_music_path=None, max_duration=None, watermark=None):
     """
-    Assembles a final video by combining narration audio, images, subtitles, and background music.
+    Assembles a final video by combining narration audio, images, subtitles, and optional background music.
+    Optionally adds a textual watermark if 'watermark' is provided.
 
     Args:
         video_folder (str): The directory where video assets are stored.
@@ -44,6 +45,7 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None, max_
         cues (list): Subtitle cues defining the timing of text overlays.
         background_music_path (str, optional): Path to the background music file. Defaults to None.
         max_duration (float, optional): The maximum allowed duration for the video.
+        watermark (str, optional): Optional text to overlay as a watermark. Defaults to None.
 
     Returns:
         str: The path to the final video file.
@@ -57,7 +59,8 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None, max_
     # Process background music if provided
     if background_music_path:
         adjusted_bg_music_path = adjust_background_music_volume(
-            audio_path, background_music_path, target_diff=-15.0, output_dir=video_folder)
+            audio_path, background_music_path, target_diff=-15.0, output_dir=video_folder
+        )
 
         bg_music = AudioFileClip(adjusted_bg_music_path)
         if bg_music.duration < video_duration:
@@ -78,7 +81,7 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None, max_
     image_clips = []
     num_images = (len(cues) + 1) // 2
     for i in range(1, num_images):
-        group = cues[i*2:i*2+2]
+        group = cues[i * 2: i * 2 + 2]
         start = group[0][0]
         end = group[-1][1]
         duration = end - start
@@ -99,11 +102,30 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None, max_
     # Add subtitles
     srt_path = os.path.join(video_folder, f"{file_id}.srt")
     subtitles = SubtitlesClip(
-        subtitles=srt_path, make_textclip=make_textclip).with_position(("center", 1620))
+        subtitles=srt_path, make_textclip=make_textclip
+    ).with_position(("center", 1620))
 
     # Merge all elements together
     final = CompositeVideoClip([video, subtitles], size=(1080, 1920))
     final = final.with_audio(combined_audio)
+
+    # If a watermark was provided, overlay it at the bottom-right
+    if watermark:
+        watermark_clip = (
+            TextClip(
+                text=watermark,
+                font="fonts/Helvetica.ttf",
+                font_size=24,
+                color="white",
+                stroke_color="black",
+                stroke_width=1,
+                method="label"
+            )
+            .with_duration(final.duration)
+            .with_position(("right", "bottom"))
+            .with_opacity(0.5)
+        )
+        final = CompositeVideoClip([final, watermark_clip], size=(1080, 1920))
 
     # Determine the final duration:
     # Get the end time of the last subtitle cue.
@@ -112,8 +134,8 @@ def assemble_video(video_folder, file_id, cues, background_music_path=None, max_
     else:
         last_subtitle_end = video_duration
 
-    # The desired duration is the maximum between the audio duration and the last subtitle's end,
-    # but not exceeding max_duration (if provided).
+    # The desired duration is the maximum between the audio duration and
+    # the last subtitle's end, but not exceeding max_duration (if provided).
     desired_duration = max(video_duration, last_subtitle_end)
     if max_duration is not None:
         desired_duration = min(desired_duration, max_duration)

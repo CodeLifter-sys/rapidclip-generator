@@ -188,8 +188,7 @@ def main():
                 image_data,
                 directory=video_folder,
                 file_id=file_id,
-                suffix=f"img_{(i // 2) + 1}",
-                watermark=args.watermark
+                suffix=f"img_{(i // 2) + 1}"
             )
             logger.info(f"Image generated and saved as {image_file}.")
     except Exception as e:
@@ -233,7 +232,13 @@ def main():
     try:
         from services.video_editor import assemble_video
         final_video_path = assemble_video(
-            video_folder, file_id, cues, background_music_path)
+            video_folder=video_folder,
+            file_id=file_id,
+            cues=cues,
+            background_music_path=background_music_path,
+            max_duration=args.max_duration,
+            watermark=args.watermark
+        )
         logger.info(f"Final video assembled and saved as {final_video_path}.")
     except Exception as e:
         logger.error(f"Error assembling final video: {e}")
